@@ -5,6 +5,7 @@ package software.umlgenerator;
  */
 
 import android.content.pm.ApplicationInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
@@ -41,31 +42,30 @@ public class LoadPackage implements IXposedHookLoadPackage {
         if (!lpparam.packageName.equals(PACKAGE_NAME))
             return;
 
-        ApplicationInfo info = lpparam.appInfo;
-        Logg.log(info.dataDir, info.publicSourceDir, info.sourceDir);
-
         DexFile dexFile = new DexFile(lpparam.appInfo.sourceDir);
         Enumeration<String> classNames = dexFile.entries();
         while (classNames.hasMoreElements()) {
             String className = classNames.nextElement();
 
-            if (className.startsWith(lpparam.packageName) && !className.contains("$")) {
-                Logg.log(className);
-
+            if (isClassNameValid(className)) {
                 Class clazz = Class.forName(className, false, lpparam.classLoader);
 
-                Method[] methods = clazz.getDeclaredMethods();
-                for (Method method: methods) {
-                    Logg.log(method.getName());
-//                    findan(className, lpparam.classLoader, method.getName(), new XC_MethodHook() {
-//                        @Override
-//                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                            Logg.log("HOOKED: " + param.method.getName());
-//                        }
-//                    });
+                for (Method method: clazz.getDeclaredMethods()) {
+
+                    XposedBridge.hookMethod(method, new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            Logg.log("HOOKED: " + param.method.getName());
+                        }
+                    });
                 }
             }
         }
+    }
+
+    public boolean isClassNameValid(String className) {
+        return className.startsWith(PACKAGE_NAME) && !className.contains("$") &&
+                !className.contains("BuildConfig") && !className.equals(PACKAGE_NAME + ".R");
     }
 
 
