@@ -67,6 +67,4 @@ public class LoadPackage implements IXposedHookLoadPackage {
         return className.startsWith(PACKAGE_NAME) && !className.contains("$") &&
                 !className.contains("BuildConfig") && !className.equals(PACKAGE_NAME + ".R");
     }
-
-
 }
