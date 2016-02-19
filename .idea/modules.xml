@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Android-UML-Generator.iml" filepath="$PROJECT_DIR$/.idea/Android-UML-Generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/standalone/standalone.iml" filepath="$PROJECT_DIR$/standalone/standalone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xposed/xposed.iml" filepath="$PROJECT_DIR$/xposed/xposed.iml" />
     </modules>
   </component>
 </project>
