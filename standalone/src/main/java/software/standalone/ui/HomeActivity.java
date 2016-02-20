@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +34,6 @@ public class HomeActivity extends AppCompatActivity {
     @Bind(R.id.activity_home_recycler) RecyclerView recyclerView;
     @Bind(R.id.activity_home_fab) FloatingActionButton fab;
 
-    private List<AppInfo> appInfoList;
-    private AppInfoAdapter appInfoAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +43,10 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         createAppInfoList();
-
-        appInfoAdapter = new AppInfoAdapter(this, appInfoList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(appInfoAdapter);
     }
 
     private void createAppInfoList() {
-        appInfoList = new ArrayList<>();
+        List<AppInfo> appInfoList = new ArrayList<>();
 
         final PackageManager pm = getPackageManager();
         final List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -69,5 +63,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
+
+        AppInfoAdapter appInfoAdapter = new AppInfoAdapter(this, appInfoList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(appInfoAdapter);
     }
 }
