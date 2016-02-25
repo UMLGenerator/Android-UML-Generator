@@ -4,6 +4,9 @@ package software.umlgenerator;
  * Created by TimFulton on 2/10/16.
  */
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -38,37 +42,35 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class LoadPackage implements IXposedHookLoadPackage {
 
+    public static final String PACKAGE_NAME = "software.standalone";
+
     @Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
-                lpparam.packageName;
-        File file = new File(path);
-        if (file.exists()) {
-            DexFile dexFile = new DexFile(lpparam.appInfo.sourceDir);
-            Enumeration<String> classNames = dexFile.entries();
-            while (classNames.hasMoreElements()) {
-                String className = classNames.nextElement();
+        if (lpparam.packageName.equals(PACKAGE_NAME)) {
+            Class clazz = Class.forName("software.standalone.data.adapter.AppInfoAdapter",
+                    false, lpparam.classLoader);
+            Method method = clazz.getMethod("initXposed", ApplicationInfo.class);
 
-                if (isClassNameValid(lpparam, className)) {
-                    Class clazz = Class.forName(className, false, lpparam.classLoader);
-
-                    for (Method method: clazz.getDeclaredMethods()) {
-                        if (!Modifier.isAbstract(method.getModifiers())) {
-                            XposedBridge.hookMethod(method, new XC_MethodHook() {
-                                @Override
-                                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                                    Logg.log("HOOKED: " + param.method.getName());
-                                }
-                            });
-                        }
-                    }
+            XposedBridge.hookMethod(method, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    super.beforeHookedMethod(param);
+                    ApplicationInfo arg = (ApplicationInfo) param.args[0];
+                    String packageName = arg.packageName;
+                    String path =
+                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
+                                    packageName;
+                    FileWriter.write(path, packageName);
                 }
+            });
+        } else {
+            String path =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
+                            lpparam.packageName;
+            File file = new File(path);
+            if (file.exists()) {
+                new PackageListener(lpparam);
             }
         }
-    }
-
-    public boolean isClassNameValid(LoadPackageParam param, String className) {
-        return className.startsWith(param.packageName) && !className.contains("$") &&
-                !className.contains("BuildConfig") && !className.equals(param.packageName + ".R");
     }
 }

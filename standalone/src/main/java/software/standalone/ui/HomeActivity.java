@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void createAppInfoList() {
-        List<AppInfo> appInfoList = new ArrayList<>();
+        List<ApplicationInfo> appInfoList = new ArrayList<>();
 
         final PackageManager pm = getPackageManager();
         final List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -55,12 +55,7 @@ public class HomeActivity extends AppCompatActivity {
             String name = packageInfo.packageName;
             Intent intent = pm.getLaunchIntentForPackage(name);
             if (intent != null && !Objects.equals(name, getPackageName())) {
-                try {
-                    Drawable icon = getPackageManager().getApplicationIcon(name);
-                    appInfoList.add(new AppInfo(icon, name, intent));
-                } catch (PackageManager.NameNotFoundException e) {
-                    appInfoList.add(new AppInfo(null, name, intent));
-                }
+                appInfoList.add(packageInfo);
             }
         }
 

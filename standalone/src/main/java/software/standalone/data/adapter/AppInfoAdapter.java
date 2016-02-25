@@ -1,7 +1,9 @@
 package software.standalone.data.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -30,11 +32,11 @@ import software.standalone.util.Logg;
  */
 public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.AppInfoViewHolder> {
 
-    private List<AppInfo> appInfoList;
+    private List<ApplicationInfo> appInfoList;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public AppInfoAdapter(Context cxt, List<AppInfo> list) {
+    public AppInfoAdapter(Context cxt, List<ApplicationInfo> list) {
         context = cxt;
         appInfoList = list;
         layoutInflater = LayoutInflater.from(context);
@@ -47,29 +49,30 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.AppInfoV
 
     @Override
     public void onBindViewHolder(AppInfoViewHolder holder, int position) {
-        final AppInfo appInfo = appInfoList.get(position);
-        holder.textView.setText(appInfo.appName);
-        Drawable drawable = appInfo.appDrawable;
-        if (appInfo.appDrawable != null) {
+        final ApplicationInfo appInfo = appInfoList.get(position);
+        holder.textView.setText(appInfo.packageName);
+        Drawable drawable = context.getPackageManager().getApplicationIcon(appInfo);
+        if (drawable != null) {
             holder.textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
-                        appInfo.appName;
-                File file = new File(path);
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(file);
-                    out.write(appInfo.appName.getBytes());
-                    out.flush();
-                    out.close();
-                    Logg.log("WROTE PATH: ", path);
-                } catch (IOException e) {
-                    Logg.log(e);
-                }
-                context.startActivity(appInfo.appIntent);
+                initXposed(appInfo);
+//                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
+//                        appInfo.appName;
+//                File file = new File(path);
+//                FileOutputStream out = null;
+//                try {
+//                    out = new FileOutputStream(file);
+//                    out.write(appInfo.appName.getBytes());
+//                    out.flush();
+//                    out.close();
+//                    Logg.log("WROTE PATH: ", path);
+//                } catch (IOException e) {
+//                    Logg.log(e);
+//                }
+//                context.startActivity(appInfo.appIntent);
             }
         });
     }
@@ -77,6 +80,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.AppInfoV
     @Override
     public int getItemCount() {
         return appInfoList.size();
+    }
+
+    public void initXposed(ApplicationInfo appInfo) {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
+        context.startActivity(intent);
     }
 
     final class AppInfoViewHolder extends RecyclerView.ViewHolder {
