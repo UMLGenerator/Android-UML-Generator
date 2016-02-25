@@ -13,11 +13,11 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 /**
  * Created by mbpeele on 2/24/16.
  */
-public class PackageListener {
+public class PackageHooker {
 
     private final XC_LoadPackage.LoadPackageParam loadPackageParam;
 
-    public PackageListener(XC_LoadPackage.LoadPackageParam param) {
+    public PackageHooker(XC_LoadPackage.LoadPackageParam param) {
         loadPackageParam = param;
         try {
             hook();
@@ -32,7 +32,7 @@ public class PackageListener {
         while (classNames.hasMoreElements()) {
             String className = classNames.nextElement();
 
-            if (isClassNameValid(loadPackageParam, className)) {
+            if (isClassNameValid(className)) {
                 Class clazz = Class.forName(className, false, loadPackageParam.classLoader);
 
                 for (Method method: clazz.getDeclaredMethods()) {
@@ -49,7 +49,7 @@ public class PackageListener {
         }
     }
 
-    public boolean isClassNameValid(XC_LoadPackage.LoadPackageParam loadPackageParam, String className) {
+    public boolean isClassNameValid(String className) {
         return className.startsWith(loadPackageParam.packageName)
                 && !className.contains("$")
                 && !className.contains("BuildConfig")

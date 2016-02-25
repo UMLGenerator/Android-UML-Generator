@@ -59,20 +59,6 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.AppInfoV
             @Override
             public void onClick(View v) {
                 initXposed(appInfo);
-//                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
-//                        appInfo.appName;
-//                File file = new File(path);
-//                FileOutputStream out = null;
-//                try {
-//                    out = new FileOutputStream(file);
-//                    out.write(appInfo.appName.getBytes());
-//                    out.flush();
-//                    out.close();
-//                    Logg.log("WROTE PATH: ", path);
-//                } catch (IOException e) {
-//                    Logg.log(e);
-//                }
-//                context.startActivity(appInfo.appIntent);
             }
         });
     }
