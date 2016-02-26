@@ -1,19 +1,25 @@
-package software.umlgenerator;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+package software.umlgenerator.io;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import software.umlgenerator.util.Logg;
 
 /**
  * Created by mbpeele on 2/24/16.
  */
 public class FileManager {
 
-    public static void write(String path, String toWrite) {
+    private final String filePath;
+    private final File file;
+
+    public FileManager(String path) {
+        filePath = path;
+        file = new File(filePath);
+    }
+
+    public static void writePackageNameFile(String path, String toWrite) {
         File file = new File(path);
         FileOutputStream out;
         try {
@@ -21,7 +27,6 @@ public class FileManager {
             out.write(toWrite.getBytes());
             out.flush();
             out.close();
-            Logg.log("WROTE: " + toWrite);
         } catch (IOException e) {
             Logg.log("FAIL WRITE: ", e);
         }

@@ -1,4 +1,4 @@
-package software.umlgenerator;
+package software.umlgenerator.io;
 
 /**
  * Created by TimFulton on 2/10/16.
@@ -36,12 +36,13 @@ public class PackageLoader implements IXposedHookLoadPackage {
                     super.beforeHookedMethod(param);
                     ApplicationInfo arg = (ApplicationInfo) param.args[0];
                     String packageName = arg.packageName;
-                    FileManager.write(FILE_DIR + packageName, packageName);
+                    FileManager.writePackageNameFile(FILE_DIR + packageName, packageName);
                 }
             });
         } else {
-            if (FileManager.doesFileExist(FILE_DIR + lpparam.packageName)) {
-                new PackageHooker(lpparam);
+            String path = FILE_DIR + lpparam.packageName;
+            if (FileManager.doesFileExist(path)) {
+                new PackageHooker(lpparam, path);
             }
         }
     }

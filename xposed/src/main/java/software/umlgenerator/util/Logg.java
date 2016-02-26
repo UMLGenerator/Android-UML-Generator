@@ -1,4 +1,4 @@
-package software.umlgenerator;
+package software.umlgenerator.util;
 
 import android.util.Log;
 
