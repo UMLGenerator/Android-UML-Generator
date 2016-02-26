@@ -17,9 +17,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.ShortBufferException;
+import javax.crypto.spec.SecretKeySpec;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

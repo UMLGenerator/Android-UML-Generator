@@ -122,7 +122,7 @@ public class Logg {
     }
 
     public static void log(String string, Throwable throwable) {
-        mainLog(string + ", " + Arrays.toString(throwable.getStackTrace()));
+        mainLog(string + ", " + throwable.getLocalizedMessage());
     }
 
     public static void log(String... strings) {
@@ -131,14 +131,6 @@ public class Logg {
             builder.append(", ");
         }
         mainLog(builder.toString());
-    }
-
-    public static void log(Throwable throwable, String... strings) {
-        for (String toPrint: strings) {
-            builder.append(toPrint);
-            builder.append(", ");
-        }
-        mainLog(builder.toString() + throwable.getLocalizedMessage());
     }
 
     public static void log(Throwable throwable) {

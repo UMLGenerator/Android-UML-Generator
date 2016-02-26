@@ -7,7 +7,6 @@ package software.umlgenerator;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -19,11 +18,14 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class PackageLoader implements IXposedHookLoadPackage {
 
-    public static final String PACKAGE_NAME = "software.standalone";
+    private static final String STANDALONE_PACKAGE = "software.standalone";
+    private static final String FILE_DIR =
+            Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DOCUMENTS).toString();
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
-        if (lpparam.packageName.equals(PACKAGE_NAME)) {
+        if (lpparam.packageName.equals(STANDALONE_PACKAGE)) {
             Class clazz = Class.forName("software.standalone.data.adapter.AppInfoAdapter",
                     false, lpparam.classLoader);
             Method method = clazz.getMethod("initXposed", ApplicationInfo.class);
@@ -34,18 +36,11 @@ public class PackageLoader implements IXposedHookLoadPackage {
                     super.beforeHookedMethod(param);
                     ApplicationInfo arg = (ApplicationInfo) param.args[0];
                     String packageName = arg.packageName;
-                    String path =
-                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
-                                    packageName;
-                    FileWriter.write(path, packageName);
+                    FileManager.write(FILE_DIR + packageName, packageName);
                 }
             });
         } else {
-            String path =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +
-                            lpparam.packageName;
-            File file = new File(path);
-            if (file.exists()) {
+            if (FileManager.doesFileExist(FILE_DIR + lpparam.packageName)) {
                 new PackageHooker(lpparam);
             }
         }

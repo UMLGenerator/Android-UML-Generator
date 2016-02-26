@@ -32,11 +32,12 @@ public class PackageHooker {
         while (classNames.hasMoreElements()) {
             String className = classNames.nextElement();
 
-            if (isClassNameValid(className)) {
+            if (isClassValid(className)) {
                 Class clazz = Class.forName(className, false, loadPackageParam.classLoader);
 
                 for (Method method: clazz.getDeclaredMethods()) {
-                    if (!Modifier.isAbstract(method.getModifiers())) {
+                    if (isMethodValid(method)) {
+
                         XposedBridge.hookMethod(method, new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -49,10 +50,14 @@ public class PackageHooker {
         }
     }
 
-    public boolean isClassNameValid(String className) {
+    public boolean isClassValid(String className) {
         return className.startsWith(loadPackageParam.packageName)
                 && !className.contains("$")
                 && !className.contains("BuildConfig")
                 && !className.equals(loadPackageParam.packageName + ".R");
+    }
+
+    public boolean isMethodValid(Method method) {
+        return !Modifier.isAbstract(method.getModifiers());
     }
 }
