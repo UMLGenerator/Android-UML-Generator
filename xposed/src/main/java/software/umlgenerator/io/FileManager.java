@@ -1,8 +1,15 @@
 package software.umlgenerator.io;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.XMLOutputFactory2;
+import org.codehaus.stax2.XMLStreamWriter2;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import software.umlgenerator.util.Logg;
 

@@ -29,7 +29,7 @@ android {
 
 dependencies {
     provided fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.guava:guava:18.0'
+//    compile 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.1'
+    compile 'org.codehaus.woodstox:woodstox-core-asl:4.2.0'
 }
