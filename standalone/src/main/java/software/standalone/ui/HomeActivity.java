@@ -1,5 +1,6 @@
 package software.standalone.ui;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -11,8 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +54,14 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_home, menu);
 
         final MenuItem item = menu.findItem(R.id.menu_home_search);
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setQueryHint(getString(R.string.menu_home_search_hint));
+        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                searchView.onActionViewCollapsed();
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -58,23 +70,15 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String query = newText.toLowerCase();
+                final String query = newText.toLowerCase();
 
-                final List<ApplicationInfo> filteredModelList = new ArrayList<>();
-                for (ApplicationInfo model: applicationInfoList) {
-                    final String text = model.packageName.toLowerCase();
-                    if (text.contains(query)) {
-                        filteredModelList.add(model);
-                    }
-                }
-
-                appInfoAdapter.animateTo(filteredModelList);
+                appInfoAdapter.filter(query, applicationInfoList);
                 recyclerView.scrollToPosition(0);
                 return true;
             }
         });
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     private void createAppInfoList() {

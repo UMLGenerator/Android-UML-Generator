@@ -54,6 +54,19 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
         context.startActivity(intent);
     }
 
+    @Override
+    public void filter(String query, List<ApplicationInfo> backingData) {
+        final List<ApplicationInfo> filteredModelList = new ArrayList<>();
+        for (ApplicationInfo model: backingData) {
+            final String text = model.packageName.toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+
+        animateTo(filteredModelList);
+    }
+
     final class AppInfoViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.app_info_text)
