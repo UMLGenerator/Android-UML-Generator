@@ -57,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setQueryHint(getString(R.string.menu_home_search_hint));
+        LinearLayout child = (LinearLayout) searchView.getChildAt(0);
+        child.setLayoutTransition(new LayoutTransition());
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 searchView.onActionViewCollapsed();
@@ -70,9 +72,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final String query = newText.toLowerCase();
-
-                appInfoAdapter.filter(query, applicationInfoList);
+                appInfoAdapter.filter(newText.toLowerCase(), applicationInfoList);
                 recyclerView.scrollToPosition(0);
                 return true;
             }
