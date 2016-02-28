@@ -1,17 +1,13 @@
-package software.umlgenerator;
+package software.standalone.util;
 
 import android.util.Log;
 
 import java.util.Arrays;
 
-import de.robv.android.xposed.XposedBridge;
-
 /**
- * Created by mbpeele on 2/17/16.
+ * Created by milespeele on 7/3/15.
  */
 public class Logg {
-
-    //
 
     private static final String LOG_TAG = "Miles";
     private static final StringBuilder builder = new StringBuilder();
@@ -19,12 +15,12 @@ public class Logg {
     private static void mainLog(String string) {
         if (string != null) {
             if (!string.isEmpty()) {
-                XposedBridge.log(string);
+                Log.d(LOG_TAG, string);
             } else {
-                XposedBridge.log("printLn needs a Message");
+                Log.d(LOG_TAG, "printLn needs a Message");
             }
         } else {
-            XposedBridge.log("Argument to Logg is null");
+            Log.d(LOG_TAG, "Argument to Logg is null");
         }
         builder.setLength(0);
     }

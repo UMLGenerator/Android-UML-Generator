@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Monitor</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_home_search_hint">Search for a package</string>
 </resources>
