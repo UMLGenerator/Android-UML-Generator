@@ -33,7 +33,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Bind(R.id.activity_home_toolbar) Toolbar toolbar;
     @Bind(R.id.activity_home_recycler) RecyclerView recyclerView;
-    @Bind(R.id.activity_home_fab) FloatingActionButton fab;
 
     private AppInfoAdapter appInfoAdapter;
     private List<ApplicationInfo> applicationInfoList;
