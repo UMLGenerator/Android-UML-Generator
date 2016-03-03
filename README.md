@@ -14,9 +14,10 @@ The next step is to create an XML document, that contains the information about 
 Finally, once the XML document is correct, we will convert the XML into an XMI UML diagram.
 
 # Technologies used:
-Xposed
+Xposed - An application that can hook methods, and do certain things before, or after the method is used. Useful for being able to track when a method is used
 
 # References
+None yet
 
 # Team Members:
 Tim Fulton, Miles Peele, Jake Shor, Tristan Vernon
