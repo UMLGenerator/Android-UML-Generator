@@ -28,8 +28,6 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder>
     public abstract void filter(String query, List<T> backingData);
 
     public void animateTo(List<T> newData) {
-//        data = newData;
-//        notifyDataSetChanged();
         applyAndAnimateRemovals(newData);
         applyAndAnimateAdditions(newData);
         applyAndAnimateMovedItems(newData);

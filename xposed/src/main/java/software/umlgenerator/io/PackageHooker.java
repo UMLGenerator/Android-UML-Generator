@@ -31,7 +31,7 @@ public class PackageHooker {
         }
     }
 
-    public void hookAll() throws IOException, ClassNotFoundException {
+    private void hookAll() throws IOException, ClassNotFoundException {
         DexFile dexFile = new DexFile(loadPackageParam.appInfo.sourceDir);
         Enumeration<String> classNames = dexFile.entries();
         while (classNames.hasMoreElements()) {
@@ -47,9 +47,14 @@ public class PackageHooker {
 
                         XposedBridge.hookMethod(method, new XC_MethodHook() {
                             @Override
+                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                                super.beforeHookedMethod(param);
+                                Logg.log("BEFORE: " + param.method.getName());
+                            }
+
+                            @Override
                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                                Logg.log("HOOKED: " + param.method.getName());
-                                classElement.addMethod(method);
+                                Logg.log("AFTER: " + param.method.getName());
                             }
                         });
                     }
@@ -58,13 +63,13 @@ public class PackageHooker {
         }
     }
 
-    public boolean isClassValid(String className) {
+    private boolean isClassValid(String className) {
         return className.startsWith(loadPackageParam.packageName) // Only listen to package classes
                 && !className.contains("BuildConfig") // Android class that isn't actually used
                 && !className.equals(loadPackageParam.packageName + ".R"); // ^ same here
     }
 
-    public boolean isMethodValid(Method method) {
+    private boolean isMethodValid(Method method) {
         return !Modifier.isAbstract(method.getModifiers());
     }
 }
