@@ -33,14 +33,13 @@ public class PackageHooker {
 
     private void hookAll() throws IOException, ClassNotFoundException {
         DexFile dexFile = new DexFile(loadPackageParam.appInfo.sourceDir);
+        fileManager.test(loadPackageParam.packageName);
         Enumeration<String> classNames = dexFile.entries();
         while (classNames.hasMoreElements()) {
             String className = classNames.nextElement();
 
             if (isClassValid(className)) {
                 Class clazz = Class.forName(className, false, loadPackageParam.classLoader);
-
-                final ClassElement classElement = new ClassElement(clazz);
 
                 for (Method method: clazz.getDeclaredMethods()) {
                     if (isMethodValid(method)) {

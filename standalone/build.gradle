@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
@@ -20,18 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
     provided 'com.google.dagger:dagger-compiler:2.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    provided 'frankiesardo:icepick-processor:3.1.0'
-    compile 'frankiesardo:icepick:3.1.0'
     compile 'com.google.dagger:dagger:2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'

@@ -15,13 +15,11 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import software.umlgenerator.util.Logg;
 
 public class PackageLoader implements IXposedHookLoadPackage {
 
     private static final String STANDALONE_PACKAGE = "software.standalone";
-    private static final String FILE_DIR =
-            Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_DOCUMENTS).toString();
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
@@ -36,13 +34,13 @@ public class PackageLoader implements IXposedHookLoadPackage {
                     super.beforeHookedMethod(param);
                     ApplicationInfo arg = (ApplicationInfo) param.args[0];
                     String packageName = arg.packageName;
-                    FileManager.writePackageNameFile(FILE_DIR + packageName, packageName);
+                    FileManager.writeToFile(packageName);
                 }
             });
         } else {
-            String path = FILE_DIR + lpparam.packageName;
-            if (FileManager.doesFileExist(path)) {
-                new PackageHooker(lpparam, path);
+            Logg.log(lpparam.packageName);
+            if (FileManager.doesFileExist(lpparam.packageName)) {
+//                new PackageHooker(lpparam, path);
             }
         }
     }

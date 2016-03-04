@@ -11,8 +11,6 @@ import de.robv.android.xposed.XposedBridge;
  */
 public class Logg {
 
-    //
-
     private static final String LOG_TAG = "Miles";
     private static final StringBuilder builder = new StringBuilder();
 
