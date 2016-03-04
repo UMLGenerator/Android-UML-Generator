@@ -27,4 +27,5 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile 'com.google.guava:guava:18.0'
 }

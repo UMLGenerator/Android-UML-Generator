@@ -4,10 +4,16 @@ package software.umlgenerator.io;
  * Created by TimFulton on 2/10/16.
  */
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Environment;
 
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
@@ -38,9 +44,12 @@ public class PackageLoader implements IXposedHookLoadPackage {
                 }
             });
         } else {
-            Logg.log(lpparam.packageName);
-            if (FileManager.doesFileExist(lpparam.packageName)) {
-//                new PackageHooker(lpparam, path);
+            String name = lpparam.packageName;
+            File file = FileManager.getFile(name);
+            String fileContents = FileManager.readFile(file);
+
+            if (fileContents.equals(name)) {
+                new PackageHooker(lpparam, file);
             }
         }
     }

@@ -1,5 +1,6 @@
 package software.umlgenerator.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -20,9 +21,9 @@ public class PackageHooker {
     private final XC_LoadPackage.LoadPackageParam loadPackageParam;
     private FileManager fileManager;
 
-    public PackageHooker(XC_LoadPackage.LoadPackageParam param, String filePath) {
+    public PackageHooker(XC_LoadPackage.LoadPackageParam param, File file) {
         loadPackageParam = param;
-        fileManager = new FileManager(filePath);
+        fileManager = new FileManager(file);
 
         try {
             hookAll();

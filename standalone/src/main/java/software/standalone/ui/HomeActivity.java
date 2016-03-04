@@ -58,9 +58,12 @@ public class HomeActivity extends AppCompatActivity {
         searchView.setQueryHint(getString(R.string.menu_home_search_hint));
         LinearLayout child = (LinearLayout) searchView.getChildAt(0);
         child.setLayoutTransition(new LayoutTransition());
-        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                searchView.onActionViewCollapsed();
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    searchView.onActionViewCollapsed();
+                }
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

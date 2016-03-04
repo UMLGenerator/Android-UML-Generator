@@ -77,7 +77,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(ApplicationInfo appInfo) {
+        public void bind(final ApplicationInfo appInfo) {
             textView.setText(appInfo.packageName);
             Drawable drawable = context.getPackageManager().getApplicationIcon(appInfo);
             if (drawable != null) {
