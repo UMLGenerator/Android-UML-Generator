@@ -4,6 +4,8 @@ package software.umlgenerator.io;
  * Created by TimFulton on 2/10/16.
  */
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -44,6 +46,32 @@ public class PackageLoader implements IXposedHookLoadPackage {
                 }
             });
         } else {
+            findAndHookMethod("android.app.Application", lpparam.classLoader, "onCreate",
+                    new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    super.afterHookedMethod(param);
+                    Context context = (Context) param.thisObject;
+
+                    PackageManager packageManager = context.getPackageManager();
+                    PackageInfo packageInfo = packageManager.getPackageInfo(
+                            context.getPackageName(), PackageManager.GET_PERMISSIONS);
+
+                    Logg.log("FOR: ", context.getPackageName());
+                    String[] perms = packageInfo.requestedPermissions;
+                    if (perms != null) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (String permission: packageInfo.requestedPermissions) {
+                            stringBuilder.append(permission);
+                            stringBuilder.append(", ");
+                        }
+                        Logg.log("PERMISSIONS: ", stringBuilder.toString());
+                    } else {
+                        Logg.log("REQUESTS NO PERMISSIONS");
+                    }
+                }
+            });
+
             String name = lpparam.packageName;
             File file = FileManager.getFile(name);
             String fileContents = FileManager.readFile(file);
