@@ -1,1 +1,1 @@
-include ':xposed', ':standalone'
+include ':xposed', ':standalone', ':guava-19.0'

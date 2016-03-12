@@ -17,6 +17,8 @@ import java.lang.reflect.Member;
 import java.util.EnumSet;
 
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import software.umlgenerator.model.ClassElement;
+import software.umlgenerator.model.MethodElement;
 import software.umlgenerator.model.PackageElement;
 import software.umlgenerator.util.Logg;
 
@@ -50,12 +52,20 @@ public class FileManager implements FileManagerInterface {
 
     @Override
     public void writeClassElement(Class clazz) {
-
+        try {
+            writer.write(new ClassElement(clazz), file);
+        } catch (Exception e) {
+            Logg.log("FAILED WRITING PACKAGE: ", e);
+        }
     }
 
     @Override
     public void writeMethodElement(Member method) {
-
+        try {
+            writer.write(new MethodElement(method), file);
+        } catch (Exception e) {
+            Logg.log("FAILED WRITING PACKAGE: ", e);
+        }
     }
 
     public static File writeToFile(String name) {

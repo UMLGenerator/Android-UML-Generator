@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('guava-19.0.jar'))
