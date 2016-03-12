@@ -55,7 +55,7 @@ public class FileManager implements FileManagerInterface {
         try {
             writer.write(new ClassElement(clazz), file);
         } catch (Exception e) {
-            Logg.log("FAILED WRITING PACKAGE: ", e);
+            Logg.log("FAILED WRITING CLASS: ", e);
         }
     }
 
@@ -64,7 +64,7 @@ public class FileManager implements FileManagerInterface {
         try {
             writer.write(new MethodElement(method), file);
         } catch (Exception e) {
-            Logg.log("FAILED WRITING PACKAGE: ", e);
+            Logg.log("FAILED WRITING METHOD: ", e);
         }
     }
 
