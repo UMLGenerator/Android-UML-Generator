@@ -1,12 +1,18 @@
 package software.umlgenerator.model;
 import java.lang.reflect.*;
+import org.simpleframework.xml.*;
 
 /**
  * Created by mbpeele on 2/26/16.
  */
+
+@Root
 public class MethodElement {
 
-    public MethodElement(Member method) {
+    @Attribute
+    private String methodName;
 
+    public MethodElement(Member method) {
+        methodName = method.getName();
     }
 }
