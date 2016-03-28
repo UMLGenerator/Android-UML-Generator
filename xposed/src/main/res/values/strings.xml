@@ -1,4 +1,0 @@
-<resources>
-    <string name="app_name">AndroidUMLGenerator</string>
-    <string name="xposed_description">Generates UMLs</string>
-</resources>

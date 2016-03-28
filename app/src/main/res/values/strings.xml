@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Monitor</string>
+
+    <string name="menu_home_search_hint">Search for a package</string>
+
+    <string name="xposed_description">Generates UMLs</string>
+    <string name="xposed_package_broadcast_intent">software.umlgenerator.packageBroadcast</string>
+</resources>
