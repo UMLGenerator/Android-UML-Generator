@@ -1,0 +1,3 @@
+1)The user opens up our program, selects a program that's on the phone, then goes to that program and uses it for a while. Afterwards they return to our program to end the logging, which then generates a UML diagram based on the program they just worked with.
+
+2)The user selects a program to run, but also specifies specific other methods or classes to log while running the program.
