@@ -12,6 +12,7 @@ import software.umlgenerator.util.Logg;
  * Created by mbpeele on 3/22/16.
  */
 public class UMLApplication extends Application {
+
     private ApplicationComponent component;
 
     @Override

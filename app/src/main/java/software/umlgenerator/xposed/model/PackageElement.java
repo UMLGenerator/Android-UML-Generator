@@ -12,36 +12,44 @@ import software.umlgenerator.xposed.model.ClassElement;
 /**
  * Created by mbpeele on 2/26/16.
  */
-@Root
-public class PackageElement {
-
-    @ElementList(inline=true)
-    private List<ClassElement> list;
-
-    @Attribute
-    private String name;
+public class PackageElement extends BaseElement<String> {
 
     public PackageElement(String packageName) {
-        list = new ArrayList<>();
+        super(packageName);
         setName(packageName);
     }
 
-    public String getName() {
-        return name;
-    }
+    @Override
+    public void addElement(BaseElement baseElement) {
+        if (baseElement instanceof ClassElement) {
+            addClassElement((ClassElement) baseElement);
+            return;
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        if (baseElement instanceof MethodElement) {
+            addMethodElement((MethodElement) baseElement);
+            return;
+        }
 
-    public List<ClassElement> getList() {
-        return list;
+        throw new IllegalArgumentException("PackageElement list can only contain ClassElement and" +
+                "MethodElement objects");
     }
 
     public void addClassElement(ClassElement baseElement) {
         String name = baseElement.getName();
         if (!name.contains("$")) {
-            list.add(baseElement);
+            getList().add(baseElement);
+        }
+    }
+
+    public void addMethodElement(MethodElement methodElement) {
+        String declaringClassName = methodElement.getData().getDeclaringClass().getName();
+        for (BaseElement element: getList()) {
+            ClassElement classElement = (ClassElement) element; // cast is ok, any direct child of this list is a ClassElement
+            if (classElement.getName().equals(declaringClassName)) {
+                element.addElement(methodElement);
+                return;
+            }
         }
     }
 }

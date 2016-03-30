@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import software.umlgenerator.util.Logg;
+import software.umlgenerator.xposed.model.ClassElement;
+import software.umlgenerator.xposed.model.MethodElement;
 import software.umlgenerator.xposed.model.PackageElement;
 
 /**
@@ -24,10 +26,30 @@ public class FileManager {
 
     private File file;
     private Persister persister;
+    private PackageElement packageElement;
 
-    public FileManager(File file1) {
-        file = file1;
+    public FileManager(File file) {
+        this.file = file;
+        packageElement = new PackageElement(file.getName());
         persister = new Persister();
+    }
+
+    public void rewrite(PackageElement packageElement) {
+        try {
+            persister.write(packageElement, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeClassElement(ClassElement classElement) {
+        packageElement.addClassElement(classElement);
+        rewrite(packageElement);
+    }
+
+    public void writeMethodElement(MethodElement methodElement) {
+        packageElement.addMethodElement(methodElement);
+        rewrite(packageElement);
     }
 
     public static File getFile(String name) {

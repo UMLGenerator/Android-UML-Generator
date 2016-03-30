@@ -37,6 +37,9 @@ public class Loader implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         final String packageName = lpparam.packageName;
         Map<String, ?> map = preferences.getAll();
+        for (String string: map.keySet()) {
+            Logg.log("KEY: ", string);
+        }
         if (map.containsKey(packageName)) {
             HookService.hookAll(lpparam);
         }
