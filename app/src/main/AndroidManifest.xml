@@ -22,9 +22,15 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".xposed.loaders.ApplicationInfoReceiver" >
-        </receiver>
+        <activity
+            android:name="software.umlgenerator.ui.FileActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+
+        <service
+            android:name=".xposed.loaders.HookService"
+            android:exported="true" />
 
         <meta-data
             android:name="xposedmodule"

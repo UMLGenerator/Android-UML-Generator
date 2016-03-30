@@ -3,7 +3,8 @@ package software.umlgenerator.dagger;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import software.umlgenerator.xposed.loaders.ApplicationInfoReceiver;
+import software.umlgenerator.data.adapter.AppInfoAdapter;
+import software.umlgenerator.ui.FileActivity;
 import software.umlgenerator.xposed.loaders.Loader;
 
 /**
@@ -13,5 +14,4 @@ import software.umlgenerator.xposed.loaders.Loader;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
 
-    void inject(ApplicationInfoReceiver applicationInfoReceiver);
 }
