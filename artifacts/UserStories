@@ -1,0 +1,13 @@
+General User Story
+
+A developer wants to be able to trace the execution of a phone application visually. An easy way to do this is to look at a UML Diagram of the execution. There is no easy way to do this through base android functionality. This is where our application comes in handy. It allows the user to select an application in our GUI, and then trace the execution of the application. The end resulting being a nice UML Diagram that the developer can view
+
+Specific User Stories
+
+As a user, I want to be able to create a UML Diagram of an application so that I can know what it is doing behind the scenes
+
+As a user and a developer, I want to be able to trace the running of ANY application on the phone.
+
+As a developer, I want to be able to create a UML Diagram of my own application so that I can trace how it works, and easily find bugs
+
+As a developer, I want to be able to choose if the supplied UML diagram has native Android calls or not, so that I can see how my application interacts with Android
