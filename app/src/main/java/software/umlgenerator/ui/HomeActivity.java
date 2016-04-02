@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -21,9 +20,9 @@ import java.util.List;
 import java.util.Objects;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import software.umlgenerator.R;
 import software.umlgenerator.data.adapter.AppInfoAdapter;
+import software.umlgenerator.xposed.loaders.XposedService;
 
 public class HomeActivity extends BaseActivity {
 

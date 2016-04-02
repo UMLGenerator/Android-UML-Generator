@@ -1,12 +1,9 @@
 package software.umlgenerator.data.adapter;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +16,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import software.umlgenerator.R;
-import software.umlgenerator.ui.FileActivity;
-import software.umlgenerator.xposed.loaders.HookService;
 
 /**
  * Created by mbpeele on 2/20/16.
@@ -52,23 +47,6 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
     }
 
     public void initXposed(Context context, ApplicationInfo appInfo) {
-        Intent onClick = new Intent(context, FileActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, onClick,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_create_new_folder_black_24dp)
-                        .setContentTitle("Writing XML for " + appInfo.packageName)
-                        .setContentText("Click to generate UML Diagram.")
-                        .setAutoCancel(true)
-                        .setOngoing(true)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
-
         Intent launchIntent =
                 context.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

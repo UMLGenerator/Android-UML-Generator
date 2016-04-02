@@ -17,7 +17,8 @@ public class ReflectionUtils {
     public static boolean isClassValid(String packageName, String className) {
         return className.startsWith(packageName) // Only listen to package classes
                 && !className.contains("BuildConfig") // Android class that isn't actually used
-                && !className.equals(packageName + ".R"); // ^ same here
+                && !className.startsWith(packageName + ".R$") // ^ same here
+                && !className.equals(packageName + ".R");
     }
 
     public static boolean isMethodValid(Method method) {

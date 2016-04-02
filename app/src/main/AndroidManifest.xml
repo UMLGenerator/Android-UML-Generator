@@ -29,8 +29,9 @@
         </activity>
 
         <service
-            android:name=".xposed.loaders.HookService"
+            android:name=".xposed.loaders.XposedService"
             android:exported="true" />
+            <!--android:process="@string/xposed_service_process"-->
 
         <meta-data
             android:name="xposedmodule"
