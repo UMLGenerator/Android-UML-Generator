@@ -1,1 +1,1 @@
-include ':xposed', ':standalone'
+include ':app'

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Monitor</string>
+
+    <string name="menu_home_search_hint">Search for a package</string>
+
+    <string name="xposed_hook_options_dialog_title">Hook Options</string>
+    <string name="xposed_hook_options_dialog_body">Selecting "START" will hook the application
+    from its first launch. Selecting "MENU" will put a notification up allowing you to choose
+    exactly when you want to hook the application.</string>
+    <string name="xpsoed_hook_options_dialog_positive">START</string>
+    <string name="xposed_hook_options_dialog_negative">MENU</string>
+    <string name="xposed_description">Generates UMLs</string>
+</resources>

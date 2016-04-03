@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/service_remoteview_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@android:color/black" >
+
+    <ImageView
+        android:id="@+id/service_remoteview_icon"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical"
+        tools:src="@drawable/ic_mode_edit_black_24dp" />
+
+    <TextView
+        android:id="@+id/service_remoteview_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/service_remoteview_icon"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/remoteview_text_size"
+        android:ellipsize="end"
+        android:textColor="@android:color/white"
+        tools:text="Writing XML for miles.dummy \n Click the check to generate UML diagram" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/service_remoteview_text"
+        android:layout_toEndOf="@id/service_remoteview_icon"
+        android:layout_alignParentBottom="true" >
+
+        <ImageButton
+            android:id="@+id/service_remoteview_start"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_play_arrow_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/service_remoteview_stop"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_pause_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/service_remoteview_generate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_check_black_24dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

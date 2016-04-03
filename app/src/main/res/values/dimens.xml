@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_elevation">8dp</dimen>
+
+    <dimen name="recycler_item_margin">6dp</dimen>
+
+    <dimen name="remoteview_text_size">12sp</dimen>
+    <dimen name="remoteview_image_dimens">36dp</dimen>
+</resources>
