@@ -7,6 +7,10 @@ import software.umlgenerator.xposed.model.parcelables.ParcelablePackage;
  */
 public class PackageXMLElement extends BaseXMLElement<ParcelablePackage> {
 
+    public PackageXMLElement(String name) {
+        super(name);
+    }
+
     public PackageXMLElement(ParcelablePackage parcelablePackage) {
         super(parcelablePackage.getPackageName());
         setData(parcelablePackage);

@@ -6,6 +6,9 @@ import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 
+import rx.Scheduler;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
 import software.umlgenerator.xposed.model.parcelables.ParcelableClass;
@@ -27,6 +30,7 @@ public class FileManager implements IFileManager {
     public FileManager(String name) {
         file = getXMLFile(name);
         persister = new Persister();
+        packageElement = new PackageXMLElement(file.getName());
     }
 
     @Override
@@ -51,12 +55,20 @@ public class FileManager implements IFileManager {
     }
 
     @Override
-    public void writeToFile(PackageXMLElement packageXMLElement) {
-        try {
-            persister.write(packageXMLElement, file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void writeToFile(final PackageXMLElement packageXMLElement) {
+        final Scheduler.Worker worker = Schedulers.io().createWorker();
+        worker.schedule(new Action0() {
+            @Override
+            public void call() {
+                try {
+                    persister.write(packageXMLElement, file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    worker.unsubscribe();
+                }
+            }
+        });
     }
 
     public File getXMLFile(String name) {

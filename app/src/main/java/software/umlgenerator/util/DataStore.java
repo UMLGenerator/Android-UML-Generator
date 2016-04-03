@@ -23,7 +23,8 @@ public class DataStore {
         return prefs.edit();
     }
 
-    public void setPackageNameToHook(String packageName) {
-        getEditor().putString(PACKAGE, packageName).apply();
+    public void setPackageNameToHook(String packageName, boolean hookFromStart) {
+        String value = packageName + "," + hookFromStart;
+        getEditor().putString(PACKAGE, value).apply();
     }
 }

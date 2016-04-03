@@ -3,19 +3,26 @@ package software.umlgenerator.xposed.loaders;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.widget.RemoteViews;
 
 import software.umlgenerator.R;
 import software.umlgenerator.ui.FileActivity;
-import software.umlgenerator.util.Logg;
+import software.umlgenerator.util.Common;
 import software.umlgenerator.xposed.io.FileManager;
 import software.umlgenerator.xposed.model.parcelables.ParcelableClass;
 import software.umlgenerator.xposed.model.parcelables.ParcelableMethod;
@@ -27,24 +34,51 @@ import software.umlgenerator.xposed.model.parcelables.ParcelablePackage;
 public class XposedService extends Service {
 
     private final static int FOREGROUND_ID = 1;
-    public final static String PACKAGE_NAME = "packageName";
+    private final static int START = 2;
+    private final static int STOP = 3;
+    private final static int GENERATE = 4;
+    private final static String INT_ARG_KEY = "argumentKey";
+
+    public final static String APPLICATION_INFO = "applicationInfo";
+    public final static String SHOULD_WRITE = "hookFromStart";
 
     private Messenger messenger;
     private FileManager fileManager;
+    private ApplicationInfo applicationInfo;
+
+    private boolean shouldWrite;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        int arg = intent.getIntExtra(INT_ARG_KEY, 0);
+        switch (arg) {
+            case START:
+                shouldWrite = true;
+                break;
+            case STOP:
+                shouldWrite = false;
+                break;
+            case GENERATE:
+                try {
+                    getPendingIntentForContent().send();
+                    dismissInForeground();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+
         return START_STICKY;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Logg.log("ON BIND");
-        String name = intent.getStringExtra(PACKAGE_NAME);
-        fileManager = new FileManager(name);
+        applicationInfo = intent.getParcelableExtra(APPLICATION_INFO);
+        shouldWrite = intent.getBooleanExtra(SHOULD_WRITE, true);
+        fileManager = new FileManager(applicationInfo.packageName);
 
-        showInForeground(name);
+        showInForeground();
 
         if (messenger == null) {
             synchronized (XposedService.class) {
@@ -58,34 +92,84 @@ public class XposedService extends Service {
     }
 
     @Override
-    public void onRebind(Intent intent) {
-        Logg.log("ON REBIND");
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Logg.log("ON UNBIND");
-        return true;
-    }
-
-    @Override
     public void onDestroy() {
         dismissInForeground();
     }
 
-    private void showInForeground(String packageName) {
-        Intent intent = new Intent(this, FileActivity.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private RemoteViews getRemoteViews() {
+        RemoteViews notificationView =
+                new RemoteViews(Common.PACKAGE_NAME, R.layout.service_remoteview_start_stop);
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_create_new_folder_black_24dp)
-                        .setContentTitle("Writing XML for " + packageName)
-                        .setContentText("Click to generate UML diagram.")
-                        .setAutoCancel(true)
-                        .setOngoing(true)
-                        .setContentIntent(pendingIntent);
+        Drawable drawable = getPackageManager().getApplicationIcon(applicationInfo);
+        Bitmap bitmap = convertDrawableToBitmap(drawable);
+        notificationView.setImageViewBitmap(R.id.service_remoteview_icon, bitmap);
+
+        String text = "Writing XML for " + applicationInfo.packageName +
+                "\n Click checkmark to generate UML diagram";
+        int length = text.split("\n")[0].length();
+
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new RelativeSizeSpan(1.4f), 0, length, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        notificationView.setTextViewText(R.id.service_remoteview_text, spannableString);
+
+        notificationView.setOnClickPendingIntent(R.id.service_remoteview_start,
+                getPendingIntentForRemote(START));
+
+        notificationView.setOnClickPendingIntent(R.id.service_remoteview_stop,
+                getPendingIntentForRemote(STOP));
+
+        notificationView.setOnClickPendingIntent(R.id.service_remoteview_generate,
+                getPendingIntentForRemote(GENERATE));
+
+        return notificationView;
+    }
+
+    private PendingIntent getPendingIntentForRemote(int arg) {
+        Intent intent = new Intent(this, XposedService.class);
+        intent.putExtra(INT_ARG_KEY, arg);
+        return PendingIntent.getService(this, arg, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent getPendingIntentForContent() {
+        Intent intent = new Intent(this, FileActivity.class);
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private Bitmap convertDrawableToBitmap(Drawable drawable) {
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    private void showInForeground() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_mode_edit_black_24dp)
+                .setContentTitle("Writing XML for " + applicationInfo.packageName)
+                .setContentText("Click to generate UML diagram.")
+                .setAutoCancel(true)
+                .setOngoing(true);
+
+        if (shouldWrite) {
+            mBuilder.setContentIntent(getPendingIntentForContent());
+        } else {
+            mBuilder.setContent(getRemoteViews());
+        }
 
         startForeground(FOREGROUND_ID, mBuilder.build());
     }
@@ -100,21 +184,27 @@ public class XposedService extends Service {
             Bundle bundle = msg.getData();
             switch (msg.what) {
                 case IXposedServiceConnection.CLASS_CALLED:
-                    bundle.setClassLoader(ParcelableClass.class.getClassLoader());
-                    ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                    fileManager.onClassCalled(parcelable);
+                    if (shouldWrite) {
+                        bundle.setClassLoader(ParcelableClass.class.getClassLoader());
+                        ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
+                        fileManager.onClassCalled(parcelable);
+                    }
                     break;
 
                 case IXposedServiceConnection.METHOD_CALLED:
-                    bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
-                    ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                    fileManager.onMethodCalled(parcelableMethod);
+                    if (shouldWrite) {
+                        bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
+                        ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
+                        fileManager.onMethodCalled(parcelableMethod);
+                    }
                     break;
 
                 case IXposedServiceConnection.PACKAGE_CALLED:
-                    bundle.setClassLoader(ParcelablePackage.class.getClassLoader());
-                    ParcelablePackage parcelablePackage = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                    fileManager.onPackageCalled(parcelablePackage);
+                    if (shouldWrite) {
+                        bundle.setClassLoader(ParcelablePackage.class.getClassLoader());
+                        ParcelablePackage parcelablePackage = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
+                        fileManager.onPackageCalled(parcelablePackage);
+                    }
                     break;
             }
         }

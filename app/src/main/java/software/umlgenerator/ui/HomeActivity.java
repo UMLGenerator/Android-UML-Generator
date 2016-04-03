@@ -1,11 +1,11 @@
 package software.umlgenerator.ui;
 
 import android.animation.LayoutTransition;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,8 +28,6 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
 
     @Bind(R.id.activity_home_toolbar) Toolbar toolbar;
     @Bind(R.id.activity_home_recycler) RecyclerView recyclerView;
-    @Bind(R.id.activity_home_fab)
-    FloatingActionButton fab;
 
     private AppInfoAdapter appInfoAdapter;
     private List<ApplicationInfo> applicationInfoList;
@@ -43,13 +41,6 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
         setSupportActionBar(toolbar);
 
         createAppInfoList();
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
@@ -88,12 +79,34 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
     }
 
     @Override
-    public void onItemClicked(ApplicationInfo applicationInfo) {
-        String packageName = applicationInfo.packageName;
+    public void onItemClicked(final ApplicationInfo applicationInfo) {
+        final String packageName = applicationInfo.packageName;
 
-        dataStore.setPackageNameToHook(packageName);
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.xposed_hook_options_dialog_title)
+                .setMessage(R.string.xposed_hook_options_dialog_body)
+                .setPositiveButton(R.string.xpsoed_hook_options_dialog_positive,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataStore.setPackageNameToHook(packageName, true);
+                        launchApplication(applicationInfo);
+                    }
+                })
+                .setNegativeButton(R.string.xposed_hook_options_dialog_negative,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataStore.setPackageNameToHook(packageName, false);
+                        launchApplication(applicationInfo);
+                    }
+                })
+                .create()
+                .show();
+    }
 
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+    private void launchApplication(ApplicationInfo applicationInfo) {
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(applicationInfo.packageName);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(launchIntent);
     }

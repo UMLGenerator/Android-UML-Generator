@@ -4,19 +4,14 @@ package software.umlgenerator.xposed.loaders;
  * Created by TimFulton on 2/10/16.
  */
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Looper;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
@@ -32,7 +27,6 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.DataStore;
-import software.umlgenerator.util.Logg;
 import software.umlgenerator.util.ReflectionUtils;
 
 public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit {
@@ -48,31 +42,34 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
     @Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         preferences.reload();
-        final String packageName = lpparam.packageName;
-        String sharedPrefsPackageName = preferences.getString(DataStore.PACKAGE, "");
-        Logg.log(packageName, sharedPrefsPackageName);
-        if (packageName.equals(sharedPrefsPackageName)) {
+        final String prefsValue = preferences.getString(DataStore.PACKAGE, "");
+        if (prefsValue.contains(lpparam.packageName)) {
             XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class,
                     new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     Context context = (Context) param.args[0];
 
-                    ComponentName componentName =
-                            new ComponentName(Common.PACKAGE_NAME, Common.SERVICE_CLASS);
-                    hookAll(context, componentName, lpparam);
+                    String[] split = prefsValue.split(",");
+                    boolean hookFromStart = Boolean.valueOf(split[1]);
+
+                    hookAll(context, hookFromStart, lpparam);
                 }
             });
         }
     }
 
-    private void hookAll(final Context context, final ComponentName componentName,
+    private void hookAll(final Context context, boolean hookFromStart,
                          final LoadPackageParam loadPackageParam) throws IOException, ClassNotFoundException {
         final XposedServiceConnection connection = new XposedServiceConnection(loadPackageParam.appInfo);
 
+        ComponentName componentName =
+                new ComponentName(Common.PACKAGE_NAME, Common.SERVICE_CLASS);
+
         Intent intent = new Intent();
         intent.setComponent(componentName);
-        intent.putExtra(XposedService.PACKAGE_NAME, loadPackageParam.packageName);
+        intent.putExtra(XposedService.SHOULD_WRITE, hookFromStart);
+        intent.putExtra(XposedService.APPLICATION_INFO, loadPackageParam.appInfo);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
         DexFile dexFile = new DexFile(loadPackageParam.appInfo.sourceDir);

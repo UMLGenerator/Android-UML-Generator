@@ -1,7 +1,6 @@
 package software.umlgenerator.data.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +35,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
 
     @Override
     public AppInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AppInfoViewHolder(layoutInflater.inflate(R.layout.app_info_adapter_layout, parent, false));
+        return new AppInfoViewHolder(layoutInflater.inflate(R.layout.adapter_app_info, parent, false));
     }
 
     @Override
@@ -78,6 +77,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
             if (drawable != null) {
                 textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
             }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
