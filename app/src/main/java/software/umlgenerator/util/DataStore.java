@@ -3,27 +3,27 @@ package software.umlgenerator.util;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.Map;
 
 /**
  * Created by mbpeele on 3/22/16.
  */
 public class DataStore {
 
-    public final static String SHARED_PREFS_KEY = "prefs";
-    public final static String PACKAGE = "package";
-
     private SharedPreferences prefs;
+    public static final String PACKAGE = "packageToHook";
 
     public DataStore(Context context) {
-        prefs = context.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
-        prefs.edit().commit();
+        prefs = context.getSharedPreferences(Common.XPOSED_PREFERENCES, Context.MODE_WORLD_READABLE);
     }
 
-    public void setPackage(String name) {
-        prefs.edit().putString(PACKAGE, name).commit();
+    private SharedPreferences.Editor getEditor() {
+        return prefs.edit();
     }
 
-    public String getPackage() {
-        return prefs.getString(PACKAGE, "");
+    public void setPackageNameToHook(String packageName) {
+        getEditor().putString(PACKAGE, packageName).apply();
     }
 }

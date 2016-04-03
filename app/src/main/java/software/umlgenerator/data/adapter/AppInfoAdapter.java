@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import software.umlgenerator.R;
+import software.umlgenerator.ui.RecyclerViewClickListener;
 
 /**
  * Created by mbpeele on 2/20/16.
@@ -24,9 +25,11 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
 
     private final LayoutInflater layoutInflater;
     private final Context context;
+    private RecyclerViewClickListener listener;
 
-    public AppInfoAdapter(Context cxt, List<ApplicationInfo> list) {
+    public AppInfoAdapter(Context cxt, RecyclerViewClickListener clickListener, List<ApplicationInfo> list) {
         super(list);
+        listener = clickListener;
         context = cxt;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -44,13 +47,6 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
     @Override
     public int getItemCount() {
         return getData().size();
-    }
-
-    public void initXposed(Context context, ApplicationInfo appInfo) {
-        Intent launchIntent =
-                context.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
-        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(launchIntent);
     }
 
     @Override
@@ -85,7 +81,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    initXposed(context, appInfo);
+                    listener.onItemClicked(appInfo);
                 }
             });
         }

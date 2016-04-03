@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,12 +23,13 @@ import java.util.Objects;
 import butterknife.Bind;
 import software.umlgenerator.R;
 import software.umlgenerator.data.adapter.AppInfoAdapter;
-import software.umlgenerator.xposed.loaders.XposedService;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements RecyclerViewClickListener {
 
     @Bind(R.id.activity_home_toolbar) Toolbar toolbar;
     @Bind(R.id.activity_home_recycler) RecyclerView recyclerView;
+    @Bind(R.id.activity_home_fab)
+    FloatingActionButton fab;
 
     private AppInfoAdapter appInfoAdapter;
     private List<ApplicationInfo> applicationInfoList;
@@ -35,11 +37,19 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
 
         setSupportActionBar(toolbar);
 
         createAppInfoList();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -77,6 +87,17 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onItemClicked(ApplicationInfo applicationInfo) {
+        String packageName = applicationInfo.packageName;
+
+        dataStore.setPackageNameToHook(packageName);
+
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchIntent);
+    }
+
     private void createAppInfoList() {
         applicationInfoList = new ArrayList<>();
 
@@ -92,7 +113,7 @@ public class HomeActivity extends BaseActivity {
             }
         }
 
-        appInfoAdapter = new AppInfoAdapter(this, applicationInfoList);
+        appInfoAdapter = new AppInfoAdapter(this, this, applicationInfoList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(appInfoAdapter);
     }

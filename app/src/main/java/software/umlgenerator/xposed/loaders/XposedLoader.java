@@ -9,6 +9,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Looper;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import software.umlgenerator.util.Common;
+import software.umlgenerator.util.DataStore;
 import software.umlgenerator.util.Logg;
 import software.umlgenerator.util.ReflectionUtils;
 
@@ -38,10 +40,18 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
     private XSharedPreferences preferences;
 
     @Override
+    public void initZygote(StartupParam startupParam) throws Throwable {
+        preferences = new XSharedPreferences(Common.PACKAGE_NAME, Common.XPOSED_PREFERENCES);
+        preferences.makeWorldReadable();
+    }
+
+    @Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
+        preferences.reload();
         final String packageName = lpparam.packageName;
-        Map<String, ?> map = preferences.getAll();
-        if (map.containsKey(packageName)) {
+        String sharedPrefsPackageName = preferences.getString(DataStore.PACKAGE, "");
+        Logg.log(packageName, sharedPrefsPackageName);
+        if (packageName.equals(sharedPrefsPackageName)) {
             XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class,
                     new XC_MethodHook() {
                 @Override
@@ -54,12 +64,6 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
                 }
             });
         }
-    }
-
-    @Override
-    public void initZygote(StartupParam startupParam) throws Throwable {
-        preferences = new XSharedPreferences(Common.PACKAGE_NAME, Common.XPOSED_PREFERENCES);
-        preferences.makeWorldReadable();
     }
 
     private void hookAll(final Context context, final ComponentName componentName,
