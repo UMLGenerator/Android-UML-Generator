@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import software.umlgenerator.R;
+import software.umlgenerator.ui.BindingViewHolder;
 import software.umlgenerator.ui.RecyclerViewClickListener;
 
 /**
@@ -61,7 +62,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
         animateTo(filteredModelList);
     }
 
-    final class AppInfoViewHolder extends RecyclerView.ViewHolder {
+    final class AppInfoViewHolder extends BindingViewHolder<ApplicationInfo> {
 
         @Bind(R.id.app_info_text)
         TextView textView;
@@ -71,9 +72,10 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final ApplicationInfo appInfo) {
-            textView.setText(appInfo.packageName);
-            Drawable drawable = context.getPackageManager().getApplicationIcon(appInfo);
+        @Override
+        public void bind(final ApplicationInfo data) {
+            textView.setText(data.packageName);
+            Drawable drawable = context.getPackageManager().getApplicationIcon(data);
             if (drawable != null) {
                 textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
             }
@@ -81,7 +83,7 @@ public class AppInfoAdapter extends FilterableAdapter<ApplicationInfo, AppInfoAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClicked(appInfo);
+                    listener.onItemClicked(data);
                 }
             });
         }
