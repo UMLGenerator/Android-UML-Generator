@@ -11,7 +11,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class ReflectionUtils {
 
     private ReflectionUtils() {
-
+        // no instance
     }
 
     public static boolean isClassValid(String packageName, String className) {

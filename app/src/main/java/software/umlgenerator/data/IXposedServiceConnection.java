@@ -1,4 +1,4 @@
-package software.umlgenerator.xposed.loaders;
+package software.umlgenerator.data;
 
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package software.umlgenerator.xposed.loaders;
+package software.umlgenerator.xposed;
 
 /**
  * Created by TimFulton on 2/10/16.
@@ -25,8 +25,10 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import software.umlgenerator.data.XposedService;
+import software.umlgenerator.data.XposedServiceConnection;
 import software.umlgenerator.util.Common;
-import software.umlgenerator.util.DataStore;
+import software.umlgenerator.data.DataStore;
 import software.umlgenerator.util.ReflectionUtils;
 
 public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit {

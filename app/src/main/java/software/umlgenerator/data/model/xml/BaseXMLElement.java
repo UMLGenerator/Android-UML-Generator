@@ -1,4 +1,4 @@
-package software.umlgenerator.xposed.model.xml;
+package software.umlgenerator.data.model.xml;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;

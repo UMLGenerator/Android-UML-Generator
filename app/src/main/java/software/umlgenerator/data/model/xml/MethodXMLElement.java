@@ -1,6 +1,6 @@
-package software.umlgenerator.xposed.model.xml;
+package software.umlgenerator.data.model.xml;
 
-import software.umlgenerator.xposed.model.parcelables.ParcelableMethod;
+import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 
 /**
  * Created by mbpeele on 2/26/16.

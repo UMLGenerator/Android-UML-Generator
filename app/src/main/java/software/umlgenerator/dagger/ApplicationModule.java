@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import software.umlgenerator.UMLApplication;
-import software.umlgenerator.util.DataStore;
+import software.umlgenerator.data.DataStore;
 
 /**
  * Created by mbpeele on 3/22/16.

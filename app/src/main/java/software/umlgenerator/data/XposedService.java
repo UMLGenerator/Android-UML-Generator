@@ -1,4 +1,4 @@
-package software.umlgenerator.xposed.loaders;
+package software.umlgenerator.data;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -23,10 +23,9 @@ import android.widget.RemoteViews;
 import software.umlgenerator.R;
 import software.umlgenerator.ui.FileActivity;
 import software.umlgenerator.util.Common;
-import software.umlgenerator.xposed.io.FileManager;
-import software.umlgenerator.xposed.model.parcelables.ParcelableClass;
-import software.umlgenerator.xposed.model.parcelables.ParcelableMethod;
-import software.umlgenerator.xposed.model.parcelables.ParcelablePackage;
+import software.umlgenerator.data.model.parcelables.ParcelableClass;
+import software.umlgenerator.data.model.parcelables.ParcelableMethod;
+import software.umlgenerator.data.model.parcelables.ParcelablePackage;
 
 /**
  * Created by mbpeele on 2/24/16.

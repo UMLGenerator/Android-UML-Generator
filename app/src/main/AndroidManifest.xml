@@ -29,7 +29,7 @@
         </activity>
 
         <service
-            android:name=".xposed.loaders.XposedService"
+            android:name=".data.XposedService"
             android:exported="true" />
         <meta-data
             android:name="xposedmodule"

@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import software.umlgenerator.UMLApplication;
-import software.umlgenerator.util.DataStore;
+import software.umlgenerator.data.DataStore;
 
 /**
  * Created by mbpeele on 3/23/16.

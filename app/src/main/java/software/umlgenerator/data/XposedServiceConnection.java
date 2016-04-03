@@ -1,4 +1,4 @@
-package software.umlgenerator.xposed.loaders;
+package software.umlgenerator.data;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -14,15 +14,14 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import software.umlgenerator.util.Logg;
-import software.umlgenerator.xposed.model.parcelables.ParcelableClass;
-import software.umlgenerator.xposed.model.parcelables.ParcelableMethod;
-import software.umlgenerator.xposed.model.parcelables.ParcelablePackage;
+import software.umlgenerator.data.model.parcelables.ParcelableClass;
+import software.umlgenerator.data.model.parcelables.ParcelableMethod;
+import software.umlgenerator.data.model.parcelables.ParcelablePackage;
 
 /**
  * Created by mbpeele on 4/1/16.
  */
-class XposedServiceConnection implements ServiceConnection, IXposedServiceConnection {
+public class XposedServiceConnection implements ServiceConnection, IXposedServiceConnection {
 
     private Messenger messenger;
     private final List<Message> unsentMessages;

@@ -7,15 +7,10 @@ import android.util.Log;
  */
 public class Logg {
 
-    public enum TAG {
-        XPOSED,
-        DEBUG
-    }
-
     private static final String LOG_TAG = "Miles";
     private static final StringBuilder builder = new StringBuilder();
 
-    private static void mainLog(TAG tag, StringBuilder stringBuilder) {
+    private static void mainLog(StringBuilder stringBuilder) {
         String string = stringBuilder.toString();
         if (!string.isEmpty()) {
             Log.d(LOG_TAG, string);
@@ -34,20 +29,13 @@ public class Logg {
         for (Object object: objects) {
             append(object);
         }
-        mainLog(null, builder);
+        mainLog(builder);
     }
 
     public static void log(String... strings) {
         for (String string: strings) {
             append(string);
         }
-        mainLog(null, builder);
-    }
-
-    public static void log(TAG tag, Object... objects) {
-        for (Object object: objects) {
-            append(object);
-        }
-        mainLog(tag, builder);
+        mainLog(builder);
     }
 }

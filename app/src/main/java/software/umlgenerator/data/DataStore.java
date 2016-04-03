@@ -1,4 +1,4 @@
-package software.umlgenerator.util;
+package software.umlgenerator.data;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.util.Map;
+
+import software.umlgenerator.util.Common;
 
 /**
  * Created by mbpeele on 3/22/16.

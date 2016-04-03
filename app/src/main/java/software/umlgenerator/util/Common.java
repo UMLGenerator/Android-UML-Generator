@@ -11,5 +11,5 @@ public class Common {
     public final static String FILE_DIR =
             Environment.getExternalStorageDirectory() + "/software.umlgenerator/";
     public final static String XPOSED_PREFERENCES = "prefs";
-    public final static String SERVICE_CLASS = "software.umlgenerator.xposed.loaders.XposedService";
+    public final static String SERVICE_CLASS = "software.umlgenerator.data.XposedService";
 }

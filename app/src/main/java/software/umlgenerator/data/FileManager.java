@@ -1,6 +1,4 @@
-package software.umlgenerator.xposed.io;
-
-import android.os.Looper;
+package software.umlgenerator.data;
 
 import org.simpleframework.xml.core.Persister;
 
@@ -11,12 +9,12 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
-import software.umlgenerator.xposed.model.parcelables.ParcelableClass;
-import software.umlgenerator.xposed.model.parcelables.ParcelableMethod;
-import software.umlgenerator.xposed.model.parcelables.ParcelablePackage;
-import software.umlgenerator.xposed.model.xml.ClassXMLElement;
-import software.umlgenerator.xposed.model.xml.MethodXMLElement;
-import software.umlgenerator.xposed.model.xml.PackageXMLElement;
+import software.umlgenerator.data.model.parcelables.ParcelableClass;
+import software.umlgenerator.data.model.parcelables.ParcelableMethod;
+import software.umlgenerator.data.model.parcelables.ParcelablePackage;
+import software.umlgenerator.data.model.xml.ClassXMLElement;
+import software.umlgenerator.data.model.xml.MethodXMLElement;
+import software.umlgenerator.data.model.xml.PackageXMLElement;
 
 /**
  * Created by mbpeele on 2/24/16.

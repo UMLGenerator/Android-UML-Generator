@@ -1,11 +1,10 @@
-package software.umlgenerator.xposed.model.parcelables;
+package software.umlgenerator.data.model.parcelables;
 
 import android.content.pm.ApplicationInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
