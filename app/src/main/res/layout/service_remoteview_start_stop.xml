@@ -13,7 +13,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center_vertical"
-        tools:src="@drawable/ic_mode_edit_black_24dp" />
+        tools:src="@drawable/ic_mode_edit_24dp" />
 
     <TextView
         android:id="@+id/service_remoteview_text"
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_play_arrow_black_24dp" />
+            android:src="@drawable/ic_play_arrow_24dp" />
 
         <ImageButton
             android:id="@+id/service_remoteview_stop"
@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_pause_black_24dp" />
+            android:src="@drawable/ic_pause_24dp" />
 
         <ImageButton
             android:id="@+id/service_remoteview_generate"
@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_check_black_24dp" />
+            android:src="@drawable/ic_check_24dp" />
 
     </LinearLayout>
 

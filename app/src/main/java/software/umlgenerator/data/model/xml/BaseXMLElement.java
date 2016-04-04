@@ -3,6 +3,7 @@ package software.umlgenerator.data.model.xml;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public abstract class BaseXMLElement<T> {
     @ElementList(inline = true)
     private List<BaseXMLElement> list;
 
+    @Transient
     private T data;
 
     public BaseXMLElement(String name) {

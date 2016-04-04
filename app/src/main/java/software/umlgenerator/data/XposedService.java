@@ -131,6 +131,7 @@ public class XposedService extends Service {
 
     private PendingIntent getPendingIntentForContent() {
         Intent intent = new Intent(this, FileActivity.class);
+        intent.setData(fileManager.getFileUri());
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -158,7 +159,7 @@ public class XposedService extends Service {
 
     private void showInForeground() {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_mode_edit_black_24dp)
+                .setSmallIcon(R.drawable.ic_mode_edit_24dp)
                 .setContentTitle("Writing XML for " + applicationInfo.packageName)
                 .setContentText("Click to generate UML diagram.")
                 .setAutoCancel(true)

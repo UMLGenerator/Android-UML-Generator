@@ -18,7 +18,7 @@ public class ReflectionUtils {
         return className.startsWith(packageName) // Only listen to package classes
                 && !className.contains("BuildConfig") // Android class that isn't actually used
                 && !className.startsWith(packageName + ".R$") // ^ same here
-                && !className.equals(packageName + ".R");
+                && !className.equals(packageName + ".R"); // another one...
     }
 
     public static boolean isMethodValid(Method method) {

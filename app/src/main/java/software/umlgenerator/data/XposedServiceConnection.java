@@ -28,10 +28,8 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
 
     private boolean isBound = false;
 
-    public XposedServiceConnection(ApplicationInfo applicationInfo) {
+    public XposedServiceConnection() {
         unsentMessages = new CopyOnWriteArrayList<>();
-
-        sendPackageMessage(applicationInfo);
     }
 
     @Override

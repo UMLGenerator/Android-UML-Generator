@@ -1,5 +1,7 @@
 package software.umlgenerator.data;
 
+import android.net.Uri;
+
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
@@ -76,5 +78,9 @@ public class FileManager implements IFileManager {
         Logg.log("GETTING XML FILE: ", name);
 
         return new File(dir, name);
+    }
+
+    public Uri getFileUri() {
+        return Uri.fromFile(file);
     }
 }
