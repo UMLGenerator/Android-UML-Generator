@@ -18,7 +18,7 @@ Finally, once the XML document is correct, we will convert the XML into an XMI U
 Xposed - An application that can hook methods, and do certain things before, or after the method is used. Useful for being able to track when a method is used
 
 # References
-None yet
+http://modeling-languages.com/xmi-nightmares-argouml-xmi-format-change/ - Here we can see where problems from XMI are
 
 # Team Members:
 Tim Fulton, Miles Peele, Jake Shor, Tristan Vernon
