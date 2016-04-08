@@ -191,11 +191,19 @@ public class XposedService extends Service {
                     }
                     break;
 
-                case IXposedServiceConnection.METHOD_CALLED:
+                case IXposedServiceConnection.METHOD_BEFORE_CALLED:
                     if (shouldWrite) {
                         bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
                         ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onMethodCalled(parcelableMethod);
+                        fileManager.onBeforeMethodCalled(parcelableMethod);
+                    }
+                    break;
+
+                case IXposedServiceConnection.METHOD_AFTER_CALLED:
+                    if (shouldWrite) {
+                        bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
+                        ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
+                        fileManager.onAfterMethodCalled(parcelableMethod);
                     }
                     break;
 

@@ -6,17 +6,13 @@ import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 
-import rx.Scheduler;
-import rx.functions.Action0;
-import rx.schedulers.Schedulers;
-import software.umlgenerator.util.Common;
-import software.umlgenerator.util.Logg;
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 import software.umlgenerator.data.model.parcelables.ParcelablePackage;
 import software.umlgenerator.data.model.xml.ClassXMLElement;
-import software.umlgenerator.data.model.xml.MethodXMLElement;
 import software.umlgenerator.data.model.xml.PackageXMLElement;
+import software.umlgenerator.util.Common;
+import software.umlgenerator.util.Logg;
 
 /**
  * Created by mbpeele on 2/24/16.
@@ -48,10 +44,13 @@ public class FileManager implements IFileManager {
     }
 
     @Override
-    public void onMethodCalled(ParcelableMethod parcelableMethod) {
-        packageElement.addMethodElement(new MethodXMLElement(parcelableMethod));
+    public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
 
-        writeToFile(packageElement);
+    }
+
+    @Override
+    public void onAfterMethodCalled(ParcelableMethod parcelableMethod) {
+
     }
 
     @Override
