@@ -3,7 +3,7 @@
 
     <string name="menu_home_search_hint">Search for a package</string>
 
-    <string name="umlservice_api_base">BASE</string>
+    <string name="umlservice_api_base">http://10.0.3.2:5000/</string>
 
     <string name="xposed_hook_options_dialog_title">Hook Options</string>
     <string name="xposed_hook_options_dialog_body">Selecting "START" will hook the application

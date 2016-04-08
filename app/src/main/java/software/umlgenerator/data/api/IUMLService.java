@@ -2,6 +2,7 @@ package software.umlgenerator.data.api;
 
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import rx.Observable;
 
@@ -10,6 +11,6 @@ import rx.Observable;
  */
 interface IUMLService {
 
-    @GET("/random")
-    Observable<Object> getSomething();
+    @GET("/uml")
+    Observable<ResponseBody> getSomething();
 }

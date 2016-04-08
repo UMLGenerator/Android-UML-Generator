@@ -2,6 +2,7 @@ package software.umlgenerator.data.api;
 
 import java.io.File;
 
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observable;
@@ -22,6 +23,10 @@ public class UMLService {
                 .build();
 
         service = retrofit.create(IUMLService.class);
+    }
+
+    public Observable<ResponseBody> test() {
+        return service.getSomething();
     }
 
     public Observable<Object> uploadFileToServer(File xmiFile) {

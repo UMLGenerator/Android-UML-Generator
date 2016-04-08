@@ -21,8 +21,13 @@ import java.util.List;
 import java.util.Objects;
 
 import butterknife.Bind;
+import okhttp3.ResponseBody;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import software.umlgenerator.R;
 import software.umlgenerator.data.adapter.AppInfoAdapter;
+import software.umlgenerator.util.Logg;
 
 public class HomeActivity extends BaseActivity implements RecyclerViewClickListener {
 
@@ -41,6 +46,16 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
         setSupportActionBar(toolbar);
 
         createAppInfoList();
+
+        umlService.test()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ResponseBody>() {
+                    @Override
+                    public void call(ResponseBody responseBody) {
+                        Logg.log("GOT SOMETHING");
+                    }
+                });
     }
 
     @Override
