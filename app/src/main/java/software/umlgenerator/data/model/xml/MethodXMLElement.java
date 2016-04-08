@@ -40,4 +40,12 @@ public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
         super(parcelableMethod.getMethodName());
         setData(parcelableMethod);
     }
+
+    public void setSendEvent(FragmentXMLElement frag) {
+        sendEvent = frag.getXMIID();
+    }
+
+    public void setReceiveEvent(FragmentXMLElement frag) {
+        receiveEvent = frag.getXMIID();
+    }
 }
