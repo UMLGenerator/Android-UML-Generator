@@ -56,19 +56,19 @@ public class FileManager implements IFileManager {
 
     @Override
     public void writeToFile(final PackageXMLElement packageXMLElement) {
-        final Scheduler.Worker worker = Schedulers.io().createWorker();
-        worker.schedule(new Action0() {
-            @Override
-            public void call() {
-                try {
-                    persister.write(packageXMLElement, file);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    worker.unsubscribe();
-                }
-            }
-        });
+//        final Scheduler.Worker worker = Schedulers.io().createWorker();
+//        worker.schedule(new Action0() {
+//            @Override
+//            public void call() {
+//                try {
+//                    persister.write(packageXMLElement, file);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    worker.unsubscribe();
+//                }
+//            }
+//        });
     }
 
     public File getXMLFile(String name) {

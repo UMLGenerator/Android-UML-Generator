@@ -1,7 +1,10 @@
 package software.umlgenerator.data;
 
+import android.support.annotation.Nullable;
+
 import java.lang.ref.SoftReference;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import software.umlgenerator.ui.BaseActivity;
 
@@ -19,6 +22,8 @@ public abstract class ActivitySubscriber<T> extends Subscriber<T> {
         }
 
         activity.addSubscription(this);
+
+        softReference = new SoftReference<>(activity);
     }
 
     @Override
@@ -28,13 +33,19 @@ public abstract class ActivitySubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        removeSelf();
-
-        e.printStackTrace();
+        if (e instanceof HttpException) {
+            BaseActivity baseActivity = getSubscribedActivity();
+            if (baseActivity != null) {
+                baseActivity.handleError((HttpException) e);
+            }
+        } else {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onStart() {
+    public void onNext(T t) {
+
     }
 
     private void removeSelf() {
@@ -44,7 +55,9 @@ public abstract class ActivitySubscriber<T> extends Subscriber<T> {
         }
     }
 
+    @Nullable
     public BaseActivity getSubscribedActivity() {
         return softReference.get();
     }
+
 }

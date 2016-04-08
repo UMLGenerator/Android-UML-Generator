@@ -14,8 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +28,9 @@ import java.util.Objects;
 import butterknife.Bind;
 import okhttp3.ResponseBody;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import software.umlgenerator.R;
+import software.umlgenerator.data.ActivitySubscriber;
 import software.umlgenerator.data.adapter.AppInfoAdapter;
 import software.umlgenerator.util.Logg;
 
@@ -47,13 +52,34 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
 
         createAppInfoList();
 
-        umlService.test()
+        final ImageView test = (ImageView) findViewById(R.id.test);
+
+        File file = new File("/sdcard/software.umlgenerator/plantUMLTest.txt");
+        umlService.uploadFileToServer(file)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ResponseBody>() {
+                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
                     @Override
-                    public void call(ResponseBody responseBody) {
-                        Logg.log("GOT SOMETHING");
+                    public void onNext(ResponseBody responseBody) {
+                        Logg.log("RESPONSE FROM UPLOAD");
+                        try {
+                            Glide.with(HomeActivity.this)
+                                    .fromBytes()
+                                    .load(responseBody.bytes())
+                                    .into(test);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        umlService.testConnection()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        Logg.log("HAS CONNECTION");
                     }
                 });
     }

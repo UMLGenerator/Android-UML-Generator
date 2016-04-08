@@ -2,6 +2,9 @@ package software.umlgenerator.data.api;
 
 import java.io.File;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -25,11 +28,17 @@ public class UMLService {
         service = retrofit.create(IUMLService.class);
     }
 
-    public Observable<ResponseBody> test() {
-        return service.getSomething();
+    public Observable<ResponseBody> testConnection() {
+        return service.testConnection();
     }
 
-    public Observable<Object> uploadFileToServer(File xmiFile) {
-        return Observable.empty();
+    public Observable<ResponseBody> uploadFileToServer(File xmiFile) {
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), xmiFile);
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", xmiFile.getName(), requestFile);
+
+        return service.uploadFile(body);
     }
 }
