@@ -23,6 +23,22 @@ public class ParcelableMethod implements Parcelable {
         setDeclaringClassName(method.getDeclaringClass().getName());
     }
 
+    public void setMethodName(String newName) {
+        methodName = newName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setDeclaringClassName(String className) {
+        declaringClassName = className;
+    }
+
+    public String getDeclaringClassName() {
+        return declaringClassName;
+    }
+
     @Override
     public int describeContents() {
         return 0;

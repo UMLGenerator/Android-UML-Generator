@@ -1,22 +1,24 @@
 package software.umlgenerator.data.model.parcelables;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Parcel;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Created by mbpeele on 4/2/16.
+ * Created by Caedus on 4/7/2016.
  */
+
 @Accessors(chain = true)
 @Data
-public class ParcelableClass implements Parcelable {
+public class ParcelableFragment implements Parcelable {
 
     private String name;
 
-    public ParcelableClass(Class clazz) {
-        setName(clazz.getName());
+    //add proper input
+    public ParcelableFragment(Class clazz) {
+        //setName(clazz.getName());
     }
 
     public void setName(String newName) {
@@ -37,19 +39,19 @@ public class ParcelableClass implements Parcelable {
         dest.writeString(this.name);
     }
 
-    protected ParcelableClass(Parcel in) {
+    protected ParcelableFragment(Parcel in) {
         this.name = in.readString();
     }
 
-    public static final Parcelable.Creator<ParcelableClass> CREATOR = new Parcelable.Creator<ParcelableClass>() {
+    public static final Parcelable.Creator<ParcelableFragment> CREATOR = new Parcelable.Creator<ParcelableFragment>() {
         @Override
-        public ParcelableClass createFromParcel(Parcel source) {
-            return new ParcelableClass(source);
+        public ParcelableFragment createFromParcel(Parcel source) {
+            return new ParcelableFragment(source);
         }
 
         @Override
-        public ParcelableClass[] newArray(int size) {
-            return new ParcelableClass[size];
+        public ParcelableFragment[] newArray(int size) {
+            return new ParcelableFragment[size];
         }
     };
 }
