@@ -83,7 +83,12 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
                 XposedBridge.hookAllConstructors(clazz, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        connection.sendClassMessage(param.method.getDeclaringClass());
+                        connection.sendBeforeClassMessage(param.method.getDeclaringClass());
+                    }
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        connection.sendAfterClassMessage(param.method.getDeclaringClass());
                     }
                 });
 

@@ -12,17 +12,18 @@ import java.lang.reflect.Method;
  */
 interface IXposedServiceConnection {
 
-    int CLASS_CALLED = 1;
-    int METHOD_BEFORE_CALLED = 2;
-    int METHOD_AFTER_CALLED = 3;
-    int PACKAGE_CALLED = 4;
+    int CLASS_BEFORE_CALLED = 1;
+    int CLASS_AFTER_CALLED = 2;
+    int METHOD_BEFORE_CALLED = 3;
+    int METHOD_AFTER_CALLED = 4;
+    int PACKAGE_CALLED = 5;
     String BUNDLE_KEY = "IXposedServiceConnection";
 
     void sendPackageMessage(ApplicationInfo applicationInfo);
 
-    void sendClassMessage(Class clazz);
+    void sendBeforeClassMessage(Class clazz);
 
-//    void sendMethodMessage(Method method);
+    void sendAfterClassMessage(Class clazz);
 
     void sendBeforeMethodMessage(Method method);
 

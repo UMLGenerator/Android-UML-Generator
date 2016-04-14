@@ -183,11 +183,19 @@ public class XposedService extends Service {
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
             switch (msg.what) {
-                case IXposedServiceConnection.CLASS_CALLED:
+                case IXposedServiceConnection.CLASS_BEFORE_CALLED:
                     if (shouldWrite) {
                         bundle.setClassLoader(ParcelableClass.class.getClassLoader());
                         ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onClassCalled(parcelable);
+                        fileManager.onBeforeClassCalled(parcelable);
+                    }
+                    break;
+
+                case IXposedServiceConnection.CLASS_AFTER_CALLED:
+                    if (shouldWrite) {
+                        bundle.setClassLoader(ParcelableClass.class.getClassLoader());
+                        ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
+                        fileManager.onAfterClassCalled(parcelable);
                     }
                     break;
 
