@@ -13,6 +13,7 @@ import software.umlgenerator.data.model.xml.ClassXMLElement;
 import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
+import java.util.List;
 
 /**
  * Created by mbpeele on 2/24/16.
@@ -22,6 +23,9 @@ public class FileManager implements IFileManager {
     private File file;
     private Persister persister;
     private PackageXMLElement packageElement;
+    private List<ParcelableClass> classList;
+    private ParcelableMethod method;
+    private ParcelableClass targetClass;
 
     public FileManager(String name) {
         file = getXMLFile(name);
@@ -38,9 +42,23 @@ public class FileManager implements IFileManager {
 
     @Override
     public void onClassCalled(ParcelableClass parcelableClass) {
-        packageElement.addClassElement(new ClassXMLElement(parcelableClass));
+        targetClass = parcelableClass;
+        //If first class, only have to add it to the list
+        if(classList.isEmpty()){
+            classList.add(parcelableClass);
+        }
+        //If its not the first class, more checks
+        else {
+            //if there is a method, can write that method from previous class to target
+            if(method != null) {
+                writeParsedValue(classList.get(0), method, targetClass);
+            }
+            //otherwise nothing to write
+        }
 
-        writeToFile(packageElement);
+//        packageElement.addClassElement(new ClassXMLElement(parcelableClass));
+//
+//        writeToFile(packageElement);
     }
 
     @Override
@@ -81,5 +99,10 @@ public class FileManager implements IFileManager {
 
     public Uri getFileUri() {
         return Uri.fromFile(file);
+    }
+
+    public void writeParsedValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to){
+        //Constructs the line needing to be written for the method, using the from and to classes
+
     }
 }
