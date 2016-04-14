@@ -44,9 +44,14 @@ public abstract class ActivitySubscriber<T> extends Subscriber<T> {
     }
 
     @Override
-    public void onNext(T t) {
-
+    public void onNext(T object) {
+        BaseActivity activity = getSubscribedActivity();
+        if (activity != null) {
+            onSafeNext(object, activity);
+        }
     }
+
+    public abstract void onSafeNext(T data, BaseActivity activity);
 
     private void removeSelf() {
         BaseActivity activity = softReference.get();

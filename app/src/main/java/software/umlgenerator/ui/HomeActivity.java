@@ -60,12 +60,11 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ActivitySubscriber<ResponseBody>(this) {
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-                        Logg.log("RESPONSE FROM UPLOAD");
+                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
                         try {
-                            Glide.with(HomeActivity.this)
+                            Glide.with(activity)
                                     .fromBytes()
-                                    .load(responseBody.bytes())
+                                    .load(data.bytes())
                                     .into(test);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -78,7 +77,7 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ActivitySubscriber<ResponseBody>(this) {
                     @Override
-                    public void onNext(ResponseBody responseBody) {
+                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
                         Logg.log("HAS CONNECTION");
                     }
                 });
