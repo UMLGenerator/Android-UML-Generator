@@ -104,5 +104,12 @@ public class FileManager implements IFileManager {
     public void writeParsedValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to){
         //Constructs the line needing to be written for the method, using the from and to classes
 
+        //for PlantUML:
+        //writeToFile(from.getName() + " -> " + to.getName() + ": " + method.getName());
+        //This might require a new line character at the end as well
+
+        //for XMI:
+        //**need to give the method the from and to classes in order to write its line in the file properly**
+
     }
 }
