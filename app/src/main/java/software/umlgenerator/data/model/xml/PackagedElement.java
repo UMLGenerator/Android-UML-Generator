@@ -7,7 +7,7 @@ import org.simpleframework.xml.*;
  */
 
 @Root(name = "packagedElement")
-public class PackagedElement {
+public class PackagedElement /*extends BaseXMLElement*/ { //add extending
 
     @Attribute(name = "xmi:id")
     String xmiid;
