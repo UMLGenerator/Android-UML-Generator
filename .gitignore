@@ -27,10 +27,6 @@ tmp/
 bin/
 
 # Android Studio
-.gradle
-/gradlew.bat
-/gradlew
-/gradle
 /*/local.properties
 /*/out
 /*/*/build
