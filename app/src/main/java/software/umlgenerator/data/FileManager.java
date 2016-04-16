@@ -41,40 +41,75 @@ public class FileManager implements IFileManager {
     }
 
 
-    //***CURRENTLY NOT IN USE, BUT WANT TO BE***
     @Override
     public void onBeforeClassCalled(ParcelableClass parcelableClass){
         targetClass = parcelableClass;
         //If first class, only have to add it to the list
         if(classList.isEmpty()){
-            classList.add(parcelableClass);
+            classList.add(targetClass);
         }
         //If its not the first class, more checks
         else {
+            //if this class isn't already in the classList, put it in there
+            boolean isInList = false;
+            for(int i = 0; i < classList.size(); i++){ //check if it's in the list
+                String className = classList.get(i).getName();
+                if(className.equals(targetClass.getName())){
+                    isInList = true;
+                }
+            }
+            if(!isInList){ //not in the list
+                classList.add(0, targetClass);
+            }
+
             //if there is a method, can write that method from previous class to target
-            //and no matter what add the new class to the list
             if(method != null) {
-                writeParsedValue(classList.get(0), method, targetClass);
+                ParcelableClass fromClass = null;
+                //finds the method's declaring class as a parcelable
+                for(int i = 0; i < classList.size(); i++){
+                    if(classList.get(i).getName().equals(method.getDeclaringClassName())){
+                        fromClass = classList.get(i);
+                    }
+                }
+                try {
+                    writeParsedValue(fromClass, method, targetClass);
+                }
+                catch (NullPointerException error){
+                    System.out.println("could not find the method's class in the class list");
+                }
                 method = null;
             }
             else{
                 writeParsedValue(classList.get(0), targetClass);
             }
-            classList.add(0, parcelableClass);
         }
     }
-    //***CURRENTLY NOT IN USE, BUT WANT TO BE***
+
     @Override
     public void onAfterClassCalled(ParcelableClass parcelableClass){
+        /*
         if(classList.get(0) == parcelableClass){
             classList.remove(0);
         }
+        */
     }
 
     @Override
     public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
         if(method != null){
-            writeParsedValue(classList.get(0), method, classList.get(0));
+            ParcelableClass fromClass = null;
+            //finds the method's declaring class as a parcelable
+            for(int i = 0; i < classList.size(); i++){
+                if(classList.get(i).getName().equals(method.getDeclaringClassName())){
+                    fromClass = classList.get(i);
+                }
+            }
+            try {
+                writeParsedValue(fromClass, method, targetClass);
+            }
+            catch (NullPointerException error){
+                System.out.println("could not find the method's class in the class list");
+            }
         }
         method = parcelableMethod;
     }
