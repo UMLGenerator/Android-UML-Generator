@@ -21,14 +21,16 @@ import java.util.List;
 public class FileManager implements IFileManager {
 
     private File file;
+    private File plantUML;
     private Persister persister;
     private PackageXMLElement packageElement;
     private List<ParcelableClass> classList;
     private ParcelableMethod method;
     private ParcelableClass targetClass;
 
-    public FileManager(String name) {
+    public FileManager(String name, String plantUMLName) {
         file = getXMLFile(name);
+        plantUML = getplantUMLFile(plantUMLName);
         persister = new Persister();
         packageElement = new PackageXMLElement(file.getName());
     }
@@ -147,6 +149,15 @@ public class FileManager implements IFileManager {
         return new File(dir, name);
     }
 
+    public File getplantUMLFile(String name) {
+        File dir = new File(Common.FILE_DIR);
+        dir.mkdirs();
+
+        Logg.log("GETTING PLANTUML FILE: ", name);
+
+        return new File(dir, name);
+    }
+
     public Uri getFileUri() {
         return Uri.fromFile(file);
     }
@@ -159,6 +170,7 @@ public class FileManager implements IFileManager {
         //This might require a new line character at the end as well
 
         //for XMI:
+
         //**need to give the method the from and to classes in order to write its line in the file properly**
 
     }
