@@ -28,10 +28,8 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
 
     private boolean isBound = false;
 
-    public XposedServiceConnection(ApplicationInfo applicationInfo) {
+    public XposedServiceConnection() {
         unsentMessages = new CopyOnWriteArrayList<>();
-
-        sendPackageMessage(applicationInfo);
     }
 
     @Override
@@ -55,17 +53,33 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
     }
 
     @Override
-    public void sendClassMessage(Class clazz) {
+    public void sendBeforeClassMessage(Class clazz) {
         Message message = Message.obtain();
-        message.what = CLASS_CALLED;
+        message.what = CLASS_BEFORE_CALLED;
         message.setData(createMessageBundle(new ParcelableClass(clazz)));
         checkIfBound(message);
     }
 
     @Override
-    public void sendMethodMessage(Method method) {
+    public void sendAfterClassMessage(Class clazz) {
         Message message = Message.obtain();
-        message.what = METHOD_CALLED;
+        message.what = CLASS_AFTER_CALLED;
+        message.setData(createMessageBundle(new ParcelableClass(clazz)));
+        checkIfBound(message);
+    }
+
+    @Override
+    public void sendBeforeMethodMessage(Method method) {
+        Message message = Message.obtain();
+        message.what = METHOD_BEFORE_CALLED;
+        message.setData(createMessageBundle(new ParcelableMethod(method)));
+        checkIfBound(message);
+    }
+
+    @Override
+    public void sendAfterMethodMessage(Method method) {
+        Message message = Message.obtain();
+        message.what = METHOD_AFTER_CALLED;
         message.setData(createMessageBundle(new ParcelableMethod(method)));
         checkIfBound(message);
     }

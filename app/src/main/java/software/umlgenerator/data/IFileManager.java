@@ -1,5 +1,7 @@
 package software.umlgenerator.data;
 
+import android.os.Parcel;
+
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 import software.umlgenerator.data.model.parcelables.ParcelablePackage;
@@ -10,9 +12,13 @@ import software.umlgenerator.data.model.xml.PackageXMLElement;
  */
 interface IFileManager {
 
-    void onClassCalled(ParcelableClass parcelableClass);
+    void onBeforeClassCalled(ParcelableClass parcelableClass);
 
-    void onMethodCalled(ParcelableMethod parcelableMethod);
+    void onAfterClassCalled(ParcelableClass parcelableClass);
+
+    void onBeforeMethodCalled(ParcelableMethod parcelableMethod);
+
+    void onAfterMethodCalled(ParcelableMethod parcelableMethod);
 
     void onPackageCalled(ParcelablePackage parcelablePackage);
 
