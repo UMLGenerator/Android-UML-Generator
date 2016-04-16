@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import software.umlgenerator.UMLApplication;
 import software.umlgenerator.data.DataStore;
+import software.umlgenerator.data.api.UMLService;
 
 /**
  * Created by mbpeele on 3/22/16.
@@ -24,5 +25,11 @@ public class ApplicationModule {
     @Singleton
     public DataStore getDataStore() {
         return new DataStore(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    public UMLService getUMLService() {
+        return new UMLService(mApplication);
     }
 }

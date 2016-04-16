@@ -1,0 +1,12 @@
+In order to create the server to take the plantUML syntax you must do the following on the computer that you want to be the server:
+First download this: https://github.com/tmfulton/UMLServer   (This will be made part of the project soon)
+
+$ sudo pip install Flask
+
+You may have to install this: 
+http://plantuml.com/graphvizdot.html
+
+Finally:
+$ python serverMain.py
+
+You now have the server up and running

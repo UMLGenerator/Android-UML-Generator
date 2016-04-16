@@ -12,7 +12,11 @@ interface IFileManager {
 
     void onClassCalled(ParcelableClass parcelableClass);
 
-    void onMethodCalled(ParcelableMethod parcelableMethod);
+//    void onMethodCalled(ParcelableMethod parcelableMethod);
+
+    void onBeforeMethodCalled(ParcelableMethod parcelableMethod);
+
+    void onAfterMethodCalled(ParcelableMethod parcelableMethod);
 
     void onPackageCalled(ParcelablePackage parcelablePackage);
 

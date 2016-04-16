@@ -66,4 +66,8 @@ public class ParcelableMethod implements Parcelable {
             return new ParcelableMethod[size];
         }
     };
+
+    public String getName(){
+        return methodName;
+    }
 }

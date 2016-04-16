@@ -13,10 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
 
-import static de.robv.android.xposed.XposedHelpers.callMethod;
-import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-
 import dalvik.system.DexFile;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -25,10 +21,10 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import software.umlgenerator.data.DataStore;
 import software.umlgenerator.data.XposedService;
 import software.umlgenerator.data.XposedServiceConnection;
 import software.umlgenerator.util.Common;
-import software.umlgenerator.data.DataStore;
 import software.umlgenerator.util.ReflectionUtils;
 
 public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit {
@@ -63,7 +59,9 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
 
     private void hookAll(final Context context, boolean hookFromStart,
                          final LoadPackageParam loadPackageParam) throws IOException, ClassNotFoundException {
-        final XposedServiceConnection connection = new XposedServiceConnection(loadPackageParam.appInfo);
+        final XposedServiceConnection connection = new XposedServiceConnection();
+
+        connection.sendPackageMessage(loadPackageParam.appInfo);
 
         ComponentName componentName =
                 new ComponentName(Common.PACKAGE_NAME, Common.SERVICE_CLASS);
@@ -94,7 +92,12 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
                         XposedBridge.hookMethod(method, new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                                connection.sendMethodMessage(method);
+                                connection.sendBeforeMethodMessage(method);
+                            }
+
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                connection.sendAfterMethodMessage(method);
                             }
                         });
                     }
