@@ -52,8 +52,4 @@ public class ParcelableClass implements Parcelable {
             return new ParcelableClass[size];
         }
     };
-
-    public String getName(){
-        return name;
-    }
 }

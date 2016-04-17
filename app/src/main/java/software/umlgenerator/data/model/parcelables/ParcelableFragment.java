@@ -15,10 +15,11 @@ import lombok.experimental.Accessors;
 public class ParcelableFragment implements Parcelable {
 
     private String name;
+    protected Class clazz;
 
-    //add proper input
     public ParcelableFragment(Class clazz) {
-        //setName(clazz.getName());
+        this.clazz = clazz;
+        setName(clazz.getName());
     }
 
     public void setName(String newName) {
@@ -27,6 +28,10 @@ public class ParcelableFragment implements Parcelable {
 
     public String getName() {
         return name;
+    }
+
+    public Class getClazz() {
+        return clazz;
     }
 
     @Override

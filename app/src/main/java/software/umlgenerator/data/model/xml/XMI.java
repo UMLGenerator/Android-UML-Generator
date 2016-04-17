@@ -24,4 +24,9 @@ public class XMI {
     @ElementList
     UMLModel model;
 
+    public XMI(XMIDocumentation xmidoc, UMLModel umlModel) {
+        documentation = xmidoc;
+        model = umlModel;
+    }
+
 }

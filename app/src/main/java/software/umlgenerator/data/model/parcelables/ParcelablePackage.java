@@ -45,4 +45,12 @@ public class ParcelablePackage implements Parcelable {
             return new ParcelablePackage[size];
         }
     };
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
 }

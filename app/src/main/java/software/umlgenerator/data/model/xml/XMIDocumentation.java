@@ -14,4 +14,5 @@ public class XMIDocumentation {
 
     @Attribute
     String exporterVersion = "2.0";
+
 }

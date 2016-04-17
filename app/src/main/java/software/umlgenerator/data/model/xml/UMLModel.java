@@ -18,5 +18,5 @@ public class UMLModel extends ArrayList<PackagedElement> {
     String xmitype = "uml:Model";
 
     @Attribute
-    String name; //=rootModel?
+    String name = "RootModel";
 }

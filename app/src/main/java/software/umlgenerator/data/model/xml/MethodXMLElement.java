@@ -41,11 +41,11 @@ public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
         setData(parcelableMethod);
     }
 
-    public void setSendEvent(FragmentXMLElement frag) {
-        sendEvent = frag.getXMIID();
+    public void setSendEvent(String sendid) {
+        sendEvent = sendid;
     }
 
-    public void setReceiveEvent(FragmentXMLElement frag) {
-        receiveEvent = frag.getXMIID();
+    public void setReceiveEvent(String receiveid) {
+        receiveEvent = receiveid;
     }
 }

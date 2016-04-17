@@ -16,7 +16,7 @@ public class OwnedMemberList extends ArrayList<BaseXMLElement> {
     String xmiid;
 
     @Attribute
-    String name;
+    String name = "Interaction1";
 
     @Attribute
     String visibility = "public";

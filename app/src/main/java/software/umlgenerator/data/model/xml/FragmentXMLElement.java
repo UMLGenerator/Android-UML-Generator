@@ -26,8 +26,8 @@ public class FragmentXMLElement extends BaseXMLElement<ParcelableFragment> {
         setData(parcelableFragment);
     }
 
-    public void setClass(ClassXMLElement clazz) {
-        covered = clazz.getXMIID();
+    public void setCovered(String classid) {
+        covered = classid;
     }
 
     public String getXMIID() {
