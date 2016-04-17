@@ -1,6 +1,7 @@
 package software.umlgenerator.data;
 
 import android.net.Uri;
+import android.os.Parcel;
 
 import org.simpleframework.xml.core.Persister;
 
@@ -14,6 +15,7 @@ import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by mbpeele on 2/24/16.
@@ -33,6 +35,14 @@ public class FileManager implements IFileManager {
         plantUML = getplantUMLFile(plantUMLName);
         persister = new Persister();
         packageElement = new PackageXMLElement(file.getName());
+        classList = new ArrayList<ParcelableClass>();
+    }
+
+    public FileManager(String name) {
+        file = getXMLFile(name);
+        persister = new Persister();
+        packageElement = new PackageXMLElement(file.getName());
+        classList = new ArrayList<ParcelableClass>();
     }
 
     @Override
