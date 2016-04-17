@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -19,6 +22,8 @@ import software.umlgenerator.util.Logg;
 public class FileActivity extends BaseActivity {
 
     private File file;
+    private File plantUML;
+    private PrintWriter writer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +33,14 @@ public class FileActivity extends BaseActivity {
         Intent intent = getIntent();
         Uri fileUri = intent.getData();
         file = new File(fileUri.getPath());
+        plantUML = new File(fileUri.getPath() + "-plantUML");
+        try {
+            writer = new PrintWriter(new FileOutputStream(plantUML), true);
+            writer.println("@enduml");
+        }
+        catch(FileNotFoundException exception){
+            Logg.log("Couldn't create plantUML file writer");
+        }
 
         umlService.uploadFileToServer(file)
                 .subscribeOn(Schedulers.io())

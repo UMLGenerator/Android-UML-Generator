@@ -52,35 +52,35 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
 
         createAppInfoList();
 
-        final ImageView test = (ImageView) findViewById(R.id.test);
-
-        File file = new File("/sdcard/software.umlgenerator/plantUMLTest.txt");
-        umlService.uploadFileToServer(file)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
-                    @Override
-                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
-                        try {
-                            Glide.with(activity)
-                                    .fromBytes()
-                                    .load(data.bytes())
-                                    .into(test);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        umlService.testConnection()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
-                    @Override
-                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
-                        Logg.log("HAS CONNECTION");
-                    }
-                });
+//        final ImageView test = (ImageView) findViewById(R.id.test);
+//
+//        File file = new File("/sdcard/software.umlgenerator/plantUMLTest.txt");
+//        umlService.uploadFileToServer(file)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
+//                    @Override
+//                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
+//                        try {
+//                            Glide.with(activity)
+//                                    .fromBytes()
+//                                    .load(data.bytes())
+//                                    .into(test);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//
+//        umlService.testConnection()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
+//                    @Override
+//                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
+//                        Logg.log("HAS CONNECTION");
+//                    }
+//                });
     }
 
     @Override

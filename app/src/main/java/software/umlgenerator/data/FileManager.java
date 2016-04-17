@@ -14,6 +14,10 @@ import software.umlgenerator.data.model.xml.ClassXMLElement;
 import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Dictionary;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,6 +28,7 @@ public class FileManager implements IFileManager {
 
     private File file;
     private File plantUML;
+    private PrintWriter writer;
     private Persister persister;
     private PackageXMLElement packageElement;
     private List<ParcelableClass> classList;
@@ -36,6 +41,13 @@ public class FileManager implements IFileManager {
         persister = new Persister();
         packageElement = new PackageXMLElement(file.getName());
         classList = new ArrayList<ParcelableClass>();
+        try {
+            writer = new PrintWriter(plantUML);
+            writer.println("@startuml");
+        }
+        catch(FileNotFoundException exception){
+            Logg.log("Couldn't create plantUML file writer");
+        }
     }
 
     public FileManager(String name) {
@@ -161,7 +173,6 @@ public class FileManager implements IFileManager {
 
     public File getplantUMLFile(String name) {
         File dir = new File(Common.FILE_DIR);
-        dir.mkdirs();
 
         Logg.log("GETTING PLANTUML FILE: ", name);
 
@@ -176,8 +187,7 @@ public class FileManager implements IFileManager {
         //Constructs the line needing to be written for the method, using the from and to classes
 
         //for PlantUML:
-        //writeToFile(from.getName() + " -> " + to.getName() + ": " + method.getName());
-        //This might require a new line character at the end as well
+        writer.println(from.getName() + " -> " + to.getName() + ": " + method.getMethodName());
 
         //for XMI:
 
@@ -189,8 +199,7 @@ public class FileManager implements IFileManager {
         //writes the line for PlantUML when there is a class that instantiates another from a declaration
 
         //for PlantUML:
-        //writeToFile(from.getName() + " -> " + to.getName());
-        //this might require a new line character at the end as well
+        writer.println(from.getName() + " -> " + to.getName());
 
         //for XMI:
         //Should not be necessary
