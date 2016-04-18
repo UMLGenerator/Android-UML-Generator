@@ -195,7 +195,8 @@ public class FileManager implements IFileManager {
         //Constructs the line needing to be written for the method, using the from and to classes
 
         //for PlantUML:
-        writer.println(from.getName() + " -> " + to.getName() + ": " + method.getMethodName());
+        writer.println((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
+        Logg.log((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
 
         //for XMI:
 
@@ -207,7 +208,8 @@ public class FileManager implements IFileManager {
         //writes the line for PlantUML when there is a class that instantiates another from a declaration
 
         //for PlantUML:
-        writer.println(from.getName() + " -> " + to.getName());
+        writer.println((from.getName() + " -> " + to.getName()).replace("$", "_"));
+        Logg.log((from.getName() + " -> " + to.getName()).replace("$", "_"));
 
         //for XMI:
         //Should not be necessary
