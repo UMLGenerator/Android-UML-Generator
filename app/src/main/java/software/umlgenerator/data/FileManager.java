@@ -91,17 +91,22 @@ public class FileManager implements IFileManager {
                 ParcelableClass fromClass = null;
                 //finds the method's declaring class as a parcelable
                 for(int i = 0; i < classList.size(); i++){
+                    System.out.println("does " + classList.get(i).getName() + " equal " + method.getDeclaringClassName());
                     if(classList.get(i).getName().equals(method.getDeclaringClassName())){
                         fromClass = classList.get(i);
                     }
                 }
-                try {
-                    writeParsedValue(fromClass, method, targetClass);
-                }
-                catch (NullPointerException error){
-                    System.out.println("could not find the method's class in the class list");
+                if(fromClass != null) {
+                    try {
+                        //System.out.println(fromClass.getName());
+                        writeParsedValue(fromClass, method, targetClass);
+                    } catch (NullPointerException error) {
+                        //System.out.println(fromClass.getName());
+                        System.out.println("could not find the method's class in the class list");
+                    }
                 }
                 method = null;
+
             }
             else{
                 writeParsedValue(classList.get(0), targetClass);
@@ -128,11 +133,14 @@ public class FileManager implements IFileManager {
                     fromClass = classList.get(i);
                 }
             }
-            try {
-                writeParsedValue(fromClass, method, targetClass);
-            }
-            catch (NullPointerException error){
-                System.out.println("could not find the method's class in the class list");
+            if(fromClass != null) {
+                try {
+                    //System.out.println(fromClass.getName());
+                    writeParsedValue(fromClass, method, targetClass);
+                } catch (NullPointerException error) {
+                    //System.out.println(fromClass.getName());
+                    System.out.println("could not find the method's class in the class list");
+                }
             }
         }
         method = parcelableMethod;
