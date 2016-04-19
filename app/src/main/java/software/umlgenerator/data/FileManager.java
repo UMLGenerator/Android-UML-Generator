@@ -33,8 +33,9 @@ public class FileManager implements IFileManager {
     private Persister persister;
     private PackageXMLElement packageElement;
     private List<ParcelableClass> classList;
-    private ParcelableMethod method;
+    private List<ParcelableMethod> method;
     private ParcelableClass targetClass;
+    private Boolean usedMethod = false;
 
     public FileManager(String name, String plantUMLName) {
         file = getXMLFile(name);
@@ -42,6 +43,7 @@ public class FileManager implements IFileManager {
         persister = new Persister();
         packageElement = new PackageXMLElement(file.getName());
         classList = new ArrayList<ParcelableClass>();
+        method = new ArrayList<ParcelableMethod>();
         try {
             writer = new PrintWriter(new FileOutputStream(plantUML), true);
             writer.println("@startuml");
@@ -88,25 +90,25 @@ public class FileManager implements IFileManager {
             }
 
             //if there is a method, can write that method from previous class to target
-            if(method != null) {
+            if(!method.isEmpty()) {
                 ParcelableClass fromClass = null;
                 //finds the method's declaring class as a parcelable
                 for(int i = 0; i < classList.size(); i++){
                     //System.out.println("does " + classList.get(i).getName() + " equal " + method.getDeclaringClassName());
-                    if(classList.get(i).getName().equals(method.getDeclaringClassName())){
+                    if(classList.get(i).getName().equals(method.get(0).getDeclaringClassName())){
                         fromClass = classList.get(i);
                     }
                 }
                 if(fromClass != null) {
                     try {
                         //System.out.println(fromClass.getName());
-                        writeParsedValue(fromClass, method, targetClass);
+                        writeParsedValue(fromClass, method.get(0), targetClass);
+                        usedMethod = true;
                     } catch (NullPointerException error) {
                         //System.out.println(fromClass.getName());
                         System.out.println("could not find the method's class in the class list");
                     }
                 }
-                method = null;
 
             }
             else{
@@ -126,31 +128,55 @@ public class FileManager implements IFileManager {
 
     @Override
     public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
-        if(method != null){
+//        if(!method.isEmpty()){
+//            ParcelableClass fromClass = null;
+//            //finds the method's declaring class as a parcelable
+//            for(int i = 0; i < classList.size(); i++){
+//                if(classList.get(i).getName().equals(method.get(0).getDeclaringClassName())){
+//                    fromClass = classList.get(i);
+//                }
+//            }
+//            if(fromClass != null) {
+//                try {
+//                    //System.out.println(fromClass.getName());
+//                    writeParsedValue(fromClass, method.get(0), targetClass);
+//                } catch (NullPointerException error) {
+//                    //System.out.println(fromClass.getName());
+//                    System.out.println("could not find the method's class in the class list");
+//                }
+//            }
+//        }
+        usedMethod = false;
+        method.add(0, parcelableMethod);
+    }
+
+    @Override
+    public void onAfterMethodCalled(ParcelableMethod parcelableMethod) {
+        if(!usedMethod){
             ParcelableClass fromClass = null;
             //finds the method's declaring class as a parcelable
             for(int i = 0; i < classList.size(); i++){
-                if(classList.get(i).getName().equals(method.getDeclaringClassName())){
+                if(classList.get(i).getName().equals(method.get(0).getDeclaringClassName())){
                     fromClass = classList.get(i);
                 }
             }
+
             if(fromClass != null) {
                 try {
                     //System.out.println(fromClass.getName());
-                    writeParsedValue(fromClass, method, targetClass);
+                    writeParsedValue(fromClass, method.get(0), fromClass);
                 } catch (NullPointerException error) {
                     //System.out.println(fromClass.getName());
                     System.out.println("could not find the method's class in the class list");
                 }
             }
+            usedMethod = true;
         }
-        method = parcelableMethod;
-    }
-
-    @Override
-    public void onAfterMethodCalled(ParcelableMethod parcelableMethod) {
-        if(method == parcelableMethod){
-            method = null;
+        for(int i = 0; i < method.size(); i++){
+            if(method.get(i).getMethodName().equals(parcelableMethod.getMethodName())) {
+                Logg.log("removing method: " + parcelableMethod.getMethodName());
+                method.remove(i);
+            }
         }
     }
 
