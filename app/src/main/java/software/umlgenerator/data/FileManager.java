@@ -17,7 +17,7 @@ import software.umlgenerator.util.Logg;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.FileWriter;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class FileManager implements IFileManager {
 
     private File file;
     private File plantUML;
-    private PrintWriter writer;
+    private FileWriter writer;
     private Persister persister;
     private PackageXMLElement packageElement;
     private List<ParcelableClass> classList;
@@ -45,10 +45,11 @@ public class FileManager implements IFileManager {
         classList = new ArrayList<ParcelableClass>();
         method = new ArrayList<ParcelableMethod>();
         try {
-            writer = new PrintWriter(new FileOutputStream(plantUML), true);
-            writer.println("@startuml");
+            writer = new FileWriter(plantUML);
+            writer.append("@startuml" + '\n');
+            writer.close();
         }
-        catch(FileNotFoundException exception){
+        catch(java.io.IOException exception){
             Logg.log("Couldn't create plantUML file writer");
         }
     }
@@ -109,7 +110,7 @@ public class FileManager implements IFileManager {
                         usedMethod = true;
                     } catch (NullPointerException error) {
                         //System.out.println(fromClass.getName());
-                        System.out.println("could not find the method's class in the class list");
+                        Logg.log("could not find the method's class in the class list");
                     }
                 }
 
@@ -172,7 +173,7 @@ public class FileManager implements IFileManager {
                     writeParsedValue(fromClass, method.get(0), fromClass);
                 } catch (NullPointerException error) {
                     //System.out.println(fromClass.getName());
-                    System.out.println("could not find the method's class in the class list");
+                    Logg.log("could not find the method's class in the class list");
                 }
             }
             usedMethod = true;
@@ -227,8 +228,17 @@ public class FileManager implements IFileManager {
         //Constructs the line needing to be written for the method, using the from and to classes
 
         //for PlantUML:
-        writer.println((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
-        Logg.log((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
+        try {
+            writer = new FileWriter(plantUML, true);
+            writer.append((from.getName() + " -> " + to.getName() + ": " + method.getMethodName() + '\n').replace("$", "_"));
+            Logg.log((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
+            writer.close();
+        }
+        catch(java.io.IOException exception){
+            Logg.log("Couldn't write to the plantUML file");
+        }
+        //writer.println((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
+        //Logg.log((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
 
         //for XMI:
 
@@ -240,20 +250,48 @@ public class FileManager implements IFileManager {
         //writes the line for PlantUML when there is a class that instantiates another from a declaration
 
         //for PlantUML:
-        writer.println((from.getName() + " -> " + to.getName()).replace("$", "_"));
-        Logg.log((from.getName() + " -> " + to.getName()).replace("$", "_"));
+        try {
+            writer = new FileWriter(plantUML, true);
+            writer.append((from.getName() + " -> " + to.getName() + '\n').replace("$", "_"));
+            Logg.log((from.getName() + " -> " + to.getName()).replace("$", "_"));
+            writer.close();
+        }
+        catch(java.io.IOException exception){
+            Logg.log("Couldn't write to the plantUML file");
+        }
+        //writer.println((from.getName() + " -> " + to.getName()).replace("$", "_"));
+        //Logg.log((from.getName() + " -> " + to.getName()).replace("$", "_"));
 
         //for XMI:
         //Should not be necessary
     }
 
     public void writeParsedStart(ParcelableClass start){
-        writer.println(("activate " + start.getName()).replace("$", "_"));
-        Logg.log(("activate " + start.getName()).replace("$", "_"));
+        try {
+            writer = new FileWriter(plantUML, true);
+            writer.append(("activate " + start.getName() + '\n').replace("$", "_"));
+            Logg.log(("activate " + start.getName()).replace("$", "_"));
+            writer.close();
+        }
+        catch(java.io.IOException exception){
+            Logg.log("Couldn't write to the plantUML file");
+        }
+        //writer.println(("activate " + start.getName()).replace("$", "_"));
+        //Logg.log(("activate " + start.getName()).replace("$", "_"));
     }
 
     public void writeParsedEnd(ParcelableClass end){
-        writer.println(("deactivate " + end.getName()).replace("$", "_"));
-        Logg.log(("deactivate " + end.getName()).replace("$", "_"));
+        try {
+            writer = new FileWriter(plantUML, true);
+            writer.append(("deactivate " + end.getName() + '\n').replace("$", "_"));
+            Logg.log(("deactivate " + end.getName()).replace("$", "_"));
+            writer.close();
+        }
+        catch(java.io.IOException exception){
+            Logg.log("Couldn't write to the plantUML file");
+        }
+
+        //writer.println(("deactivate " + end.getName()).replace("$", "_"));
+        //Logg.log(("deactivate " + end.getName()).replace("$", "_"));
     }
 }

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.FileWriter;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -23,7 +23,7 @@ public class FileActivity extends BaseActivity {
 
     private File file;
     private File plantUML;
-    private PrintWriter writer;
+    private FileWriter writer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,10 +35,11 @@ public class FileActivity extends BaseActivity {
         file = new File(fileUri.getPath());
         plantUML = new File(fileUri.getPath() + "-plantUML");
         try {
-            writer = new PrintWriter(new FileOutputStream(plantUML), true);
-            writer.println("@enduml");
+            writer = new FileWriter(plantUML, true);
+            writer.append("@enduml");
+            writer.close();
         }
-        catch(FileNotFoundException exception){
+        catch(java.io.IOException exception){
             Logg.log("Couldn't create plantUML file writer");
         }
 
