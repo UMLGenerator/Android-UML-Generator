@@ -74,6 +74,8 @@ public class FileManager implements IFileManager {
         //If first class, only have to add it to the list
         if(classList.isEmpty()){
             classList.add(targetClass);
+            writeParsedValue(targetClass, targetClass);
+            writeParsedStart(targetClass);
         }
         //If its not the first class, more checks
         else {
@@ -103,6 +105,7 @@ public class FileManager implements IFileManager {
                     try {
                         //System.out.println(fromClass.getName());
                         writeParsedValue(fromClass, method.get(0), targetClass);
+                        writeParsedStart(targetClass);
                         usedMethod = true;
                     } catch (NullPointerException error) {
                         //System.out.println(fromClass.getName());
@@ -113,12 +116,14 @@ public class FileManager implements IFileManager {
             }
             else{
                 writeParsedValue(classList.get(0), targetClass);
+                writeParsedStart(targetClass);
             }
         }
     }
 
     @Override
     public void onAfterClassCalled(ParcelableClass parcelableClass){
+        writeParsedEnd(parcelableClass);
         /*
         if(classList.get(0) == parcelableClass){
             classList.remove(0);
@@ -240,5 +245,15 @@ public class FileManager implements IFileManager {
 
         //for XMI:
         //Should not be necessary
+    }
+
+    public void writeParsedStart(ParcelableClass start){
+        writer.println(("activate " + start.getName()).replace("$", "_"));
+        Logg.log(("activate " + start.getName()).replace("$", "_"));
+    }
+
+    public void writeParsedEnd(ParcelableClass end){
+        writer.println(("deactivate " + end.getName()).replace("$", "_"));
+        Logg.log(("deactivate " + end.getName()).replace("$", "_"));
     }
 }
