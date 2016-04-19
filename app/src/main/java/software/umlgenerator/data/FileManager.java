@@ -16,6 +16,7 @@ import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Dictionary;
 import java.util.List;
@@ -42,7 +43,7 @@ public class FileManager implements IFileManager {
         packageElement = new PackageXMLElement(file.getName());
         classList = new ArrayList<ParcelableClass>();
         try {
-            writer = new PrintWriter(plantUML);
+            writer = new PrintWriter(new FileOutputStream(plantUML), true);
             writer.println("@startuml");
         }
         catch(FileNotFoundException exception){
@@ -91,7 +92,7 @@ public class FileManager implements IFileManager {
                 ParcelableClass fromClass = null;
                 //finds the method's declaring class as a parcelable
                 for(int i = 0; i < classList.size(); i++){
-                    System.out.println("does " + classList.get(i).getName() + " equal " + method.getDeclaringClassName());
+                    //System.out.println("does " + classList.get(i).getName() + " equal " + method.getDeclaringClassName());
                     if(classList.get(i).getName().equals(method.getDeclaringClassName())){
                         fromClass = classList.get(i);
                     }
