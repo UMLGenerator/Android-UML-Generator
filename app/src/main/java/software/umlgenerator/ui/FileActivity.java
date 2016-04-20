@@ -14,6 +14,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import software.umlgenerator.R;
 import software.umlgenerator.data.ActivitySubscriber;
+import software.umlgenerator.data.PlantUMLWriter;
 import software.umlgenerator.util.Logg;
 
 /**
@@ -34,14 +35,16 @@ public class FileActivity extends BaseActivity {
         Uri fileUri = intent.getData();
         file = new File(fileUri.getPath());
         plantUML = new File(fileUri.getPath() + "-plantUML");
-        try {
-            writer = new FileWriter(plantUML, true);
-            writer.append("@enduml");
-            writer.close();
-        }
-        catch(java.io.IOException exception){
-            Logg.log("Couldn't create plantUML file writer");
-        }
+        PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
+        plantWriter.writeEnd();
+//        try {
+//            writer = new FileWriter(plantUML, true);
+//            writer.append("@enduml");
+//            writer.close();
+//        }
+//        catch(java.io.IOException exception){
+//            Logg.log("Couldn't create plantUML file writer");
+//        }
 
         umlService.uploadFileToServer(file)
                 .subscribeOn(Schedulers.io())
