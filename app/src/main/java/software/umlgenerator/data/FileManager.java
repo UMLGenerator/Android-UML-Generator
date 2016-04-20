@@ -36,6 +36,8 @@ public class FileManager implements IFileManager {
     private List<ParcelableMethod> method;
     private ParcelableClass targetClass;
     private Boolean usedMethod = false;
+    private Boolean firstClass = true;
+    private String legend;
 
     public FileManager(String name, String plantUMLName) {
         file = getXMLFile(name);
@@ -72,6 +74,12 @@ public class FileManager implements IFileManager {
     @Override
     public void onBeforeClassCalled(ParcelableClass parcelableClass){
         targetClass = parcelableClass;
+        //If very first class
+        if(firstClass){
+            writeParsedLegend(targetClass);
+            firstClass = false;
+        }
+
         //If first class, only have to add it to the list
         if(classList.isEmpty()){
             classList.add(targetClass);
@@ -230,8 +238,12 @@ public class FileManager implements IFileManager {
         //for PlantUML:
         try {
             writer = new FileWriter(plantUML, true);
-            writer.append((from.getName() + " -> " + to.getName() + ": " + method.getMethodName() + '\n').replace("$", "_"));
-            Logg.log((from.getName() + " -> " + to.getName() + ": " + method.getMethodName()).replace("$", "_"));
+            writer.append((from.getName().replaceAll(legend, "") + " -> " +
+                    to.getName().replaceAll(legend, "") + ": " +
+                    method.getMethodName().replaceAll(legend, "") + '\n').replace("$", "_"));
+            Logg.log((from.getName().replaceAll(legend, "") + " -> "
+                    + to.getName().replaceAll(legend, "") + ": "
+                    + method.getMethodName().replaceAll(legend, "")).replace("$", "_"));
             writer.close();
         }
         catch(java.io.IOException exception){
@@ -252,8 +264,8 @@ public class FileManager implements IFileManager {
         //for PlantUML:
         try {
             writer = new FileWriter(plantUML, true);
-            writer.append((from.getName() + " -> " + to.getName() + '\n').replace("$", "_"));
-            Logg.log((from.getName() + " -> " + to.getName()).replace("$", "_"));
+            writer.append((from.getName().replaceAll(legend, "") + " -> " + to.getName().replaceAll(legend, "") + '\n').replace("$", "_"));
+            Logg.log((from.getName().replaceAll(legend, "") + " -> " + to.getName().replaceAll(legend, "")).replace("$", "_"));
             writer.close();
         }
         catch(java.io.IOException exception){
@@ -269,8 +281,8 @@ public class FileManager implements IFileManager {
     public void writeParsedStart(ParcelableClass start){
         try {
             writer = new FileWriter(plantUML, true);
-            writer.append(("activate " + start.getName() + '\n').replace("$", "_"));
-            Logg.log(("activate " + start.getName()).replace("$", "_"));
+            writer.append(("activate " + start.getName().replaceAll(legend, "") + '\n').replace("$", "_"));
+            Logg.log(("activate " + start.getName().replaceAll(legend, "")).replace("$", "_"));
             writer.close();
         }
         catch(java.io.IOException exception){
@@ -283,8 +295,8 @@ public class FileManager implements IFileManager {
     public void writeParsedEnd(ParcelableClass end){
         try {
             writer = new FileWriter(plantUML, true);
-            writer.append(("deactivate " + end.getName() + '\n').replace("$", "_"));
-            Logg.log(("deactivate " + end.getName()).replace("$", "_"));
+            writer.append(("deactivate " + end.getName().replaceAll(legend, "") + '\n').replace("$", "_"));
+            Logg.log(("deactivate " + end.getName().replaceAll(legend, "")).replace("$", "_"));
             writer.close();
         }
         catch(java.io.IOException exception){
@@ -293,5 +305,48 @@ public class FileManager implements IFileManager {
 
         //writer.println(("deactivate " + end.getName()).replace("$", "_"));
         //Logg.log(("deactivate " + end.getName()).replace("$", "_"));
+    }
+
+    public void writeParsedLegend(ParcelableClass first){
+        String fullName = first.getName();
+        List<String> pieces = new ArrayList<String>();
+
+        Logg.log("Full Name: " + fullName);
+
+        for (String retval: fullName.split("\\.")){
+            pieces.add(retval);
+            Logg.log("A Piece: " + retval);
+        }
+
+        String header = "";
+        for(int i = 0; i < pieces.size() - 1; i++){
+            header += pieces.get(i) + ".";
+        }
+
+        Logg.log("Header: " + header);
+
+        legend = header;
+
+        /*
+        legend right
+            Short
+            legend
+        endlegend
+
+         */
+
+        try {
+            writer = new FileWriter(plantUML, true);
+            writer.append("legend top" + '\n');
+            writer.append((legend + '\n').replace("$", "_"));
+            writer.append("endlegend" + '\n');
+            Logg.log("legend top");
+            Logg.log((legend).replace("$", "_"));
+            Logg.log("endlegend");
+            writer.close();
+        }
+        catch(java.io.IOException exception){
+            Logg.log("Couldn't write to the plantUML file");
+        }
     }
 }
