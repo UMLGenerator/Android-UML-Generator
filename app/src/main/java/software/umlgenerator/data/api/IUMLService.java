@@ -6,6 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -19,4 +20,7 @@ interface IUMLService {
     @Multipart
     @POST("upload")
     Observable<ResponseBody> uploadFile(@Part MultipartBody.Part file);
+
+    @POST("email/{user}")
+    Observable<ResponseBody> emailPicture(@Path("user") String email);
 }
