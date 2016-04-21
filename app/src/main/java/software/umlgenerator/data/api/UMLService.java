@@ -41,4 +41,8 @@ public class UMLService {
 
         return service.uploadFile(body);
     }
+
+    public Observable<ResponseBody> emailPicture(String email) {
+        return service.emailPicture(email);
+    }
 }

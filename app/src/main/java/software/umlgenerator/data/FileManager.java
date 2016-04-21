@@ -1,19 +1,17 @@
 package software.umlgenerator.data;
 
+
 import android.net.Uri;
 
-import org.simpleframework.xml.core.Persister;
-
 import java.io.File;
+import java.util.ArrayList;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 import software.umlgenerator.data.model.parcelables.ParcelablePackage;
-import software.umlgenerator.data.model.xml.ClassXMLElement;
 import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
-import java.util.List;
 
 /**
  * Created by mbpeele on 2/24/16.
@@ -21,86 +19,78 @@ import java.util.List;
 public class FileManager implements IFileManager {
 
     private File file;
-    private Persister persister;
+    private File plantUML;
     private PackageXMLElement packageElement;
-    private List<ParcelableClass> classList;
-    private ParcelableMethod method;
-    private ParcelableClass targetClass;
+    private ArrayList<Parser> parsers;
 
-    public FileManager(String name) {
+    public FileManager(String name, String plantUMLName) {
         file = getXMLFile(name);
-        persister = new Persister();
+        plantUML = getplantUMLFile(plantUMLName);
         packageElement = new PackageXMLElement(file.getName());
+
+        LogicalParser parser = new LogicalParser();
+        PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
+
+        parsers = new ArrayList<>();
+        parsers.add(parser);
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).addWriter(plantWriter);
+        }
+
+        writeStart();
     }
 
     @Override
     public void onPackageCalled(ParcelablePackage parcelablePackage) {
         packageElement = new PackageXMLElement(parcelablePackage);
-
-        writeToFile(packageElement);
     }
 
 
-    //***CURRENTLY NOT IN USE, BUT WANT TO BE***
     @Override
-    public void onBeforeClassCalled(ParcelableClass parcelableClass){
-        targetClass = parcelableClass;
-        //If first class, only have to add it to the list
-        if(classList.isEmpty()){
-            classList.add(parcelableClass);
-        }
-        //If its not the first class, more checks
-        else {
-            //if there is a method, can write that method from previous class to target
-            //and no matter what add the new class to the list
-            if(method != null) {
-                writeParsedValue(classList.get(0), method, targetClass);
-                method = null;
-            }
-            else{
-                writeParsedValue(classList.get(0), targetClass);
-            }
-            classList.add(0, parcelableClass);
+    public void writeStart() {
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).start();
         }
     }
-    //***CURRENTLY NOT IN USE, BUT WANT TO BE***
+
     @Override
-    public void onAfterClassCalled(ParcelableClass parcelableClass){
-        if(classList.get(0) == parcelableClass){
-            classList.remove(0);
+    public void onBeforeClassCalled(ParcelableClass parcelableClass) {
+
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).classStart(parcelableClass);
+        }
+    }
+
+    @Override
+    public void onAfterClassCalled(ParcelableClass parcelableClass) {
+
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).classEnd(parcelableClass);
         }
     }
 
     @Override
     public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
-        if(method != null){
-            writeParsedValue(classList.get(0), method, classList.get(0));
+
+        for (int i = 0; i < parsers.size(); i++){
+            parsers.get(i).methodStart(parcelableMethod);
         }
-        method = parcelableMethod;
     }
 
     @Override
     public void onAfterMethodCalled(ParcelableMethod parcelableMethod) {
-        if(method == parcelableMethod){
-            method = null;
+
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).methodEnd(parcelableMethod);
         }
     }
 
     @Override
-    public void writeToFile(final PackageXMLElement packageXMLElement) {
-//        final Scheduler.Worker worker = Schedulers.io().createWorker();
-//        worker.schedule(new Action0() {
-//            @Override
-//            public void call() {
-//                try {
-//                    persister.write(packageXMLElement, file);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    worker.unsubscribe();
-//                }
-//            }
-//        });
+    public void writeEnd() {
+        Logg.log("WRITE END");
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).stop();
+        }
     }
 
     public File getXMLFile(String name) {
@@ -112,30 +102,15 @@ public class FileManager implements IFileManager {
         return new File(dir, name);
     }
 
+    public File getplantUMLFile(String name) {
+        File dir = new File(Common.FILE_DIR);
+
+        Logg.log("GETTING PLANTUML FILE: ", name);
+
+        return new File(dir, name);
+    }
+
     public Uri getFileUri() {
         return Uri.fromFile(file);
-    }
-
-    public void writeParsedValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to){
-        //Constructs the line needing to be written for the method, using the from and to classes
-
-        //for PlantUML:
-        //writeToFile(from.getName() + " -> " + to.getName() + ": " + method.getName());
-        //This might require a new line character at the end as well
-
-        //for XMI:
-        //**need to give the method the from and to classes in order to write its line in the file properly**
-
-    }
-
-    public void writeParsedValue(ParcelableClass to, ParcelableClass from){
-        //writes the line for PlantUML when there is a class that instantiates another from a declaration
-
-        //for PlantUML:
-        //writeToFile(from.getName() + " -> " + to.getName());
-        //this might require a new line character at the end as well
-
-        //for XMI:
-        //Should not be necessary
     }
 }
