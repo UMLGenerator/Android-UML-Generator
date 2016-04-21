@@ -14,13 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,33 +47,13 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
 
         createAppInfoList();
 
-        final ImageView test = (ImageView) findViewById(R.id.test);
-
-        File file = new File("/sdcard/software.umlgenerator/plantUMLTest.txt");
-        umlService.uploadFileToServer(file)
+        umlService.emailPicture("mbpeele@email.wm.edu")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ActivitySubscriber<ResponseBody>(this) {
                     @Override
                     public void onSafeNext(ResponseBody data, BaseActivity activity) {
-                        try {
-                            Glide.with(activity)
-                                    .fromBytes()
-                                    .load(data.bytes())
-                                    .into(test);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        umlService.testConnection()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
-                    @Override
-                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
-                        Logg.log("HAS CONNECTION");
+                        Logg.log("UPLOADED?");
                     }
                 });
     }
