@@ -60,6 +60,7 @@ public class XposedService extends Service {
                 break;
             case GENERATE:
                 try {
+                    fileManager.writeEnd();
                     dismissInForeground();
                     getPendingIntentForContent().send();
                 } catch (PendingIntent.CanceledException e) {

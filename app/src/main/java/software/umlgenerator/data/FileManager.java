@@ -30,24 +30,27 @@ public class FileManager implements IFileManager {
 
         PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
 
-        writers = new ArrayList<UtilityWriter>();
+        writers = new ArrayList<>();
         writers.add(plantWriter);
 
+        writeStart();
+    }
+
+    @Override
+    public void onPackageCalled(ParcelablePackage parcelablePackage) {
+        packageElement = new PackageXMLElement(parcelablePackage);
+    }
+
+
+    @Override
+    public void writeStart() {
         for(int i = 0; i < writers.size(); i++){
             writers.get(i).writeStart();
         }
     }
 
     @Override
-    public void onPackageCalled(ParcelablePackage parcelablePackage) {
-        packageElement = new PackageXMLElement(parcelablePackage);
-
-        writeToFile(packageElement);
-    }
-
-
-    @Override
-    public void onBeforeClassCalled(ParcelableClass parcelableClass){
+    public void onBeforeClassCalled(ParcelableClass parcelableClass) {
 
         for(int i = 0; i < writers.size(); i++){
             writers.get(i).classStart(parcelableClass);
@@ -55,7 +58,7 @@ public class FileManager implements IFileManager {
     }
 
     @Override
-    public void onAfterClassCalled(ParcelableClass parcelableClass){
+    public void onAfterClassCalled(ParcelableClass parcelableClass) {
 
         for(int i = 0; i < writers.size(); i++){
             writers.get(i).classEnd(parcelableClass);
@@ -65,7 +68,7 @@ public class FileManager implements IFileManager {
     @Override
     public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
 
-        for(int i = 0; i < writers.size(); i++){
+        for (int i = 0; i < writers.size(); i++){
             writers.get(i).methodStart(parcelableMethod);
         }
     }
@@ -79,20 +82,10 @@ public class FileManager implements IFileManager {
     }
 
     @Override
-    public void writeToFile(final PackageXMLElement packageXMLElement) {
-//        final Scheduler.Worker worker = Schedulers.io().createWorker();
-//        worker.schedule(new Action0() {
-//            @Override
-//            public void call() {
-//                try {
-//                    persister.write(packageXMLElement, file);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    worker.unsubscribe();
-//                }
-//            }
-//        });
+    public void writeEnd() {
+        for(int i = 0; i < writers.size(); i++){
+            writers.get(i).writeEnd();
+        }
     }
 
     public File getXMLFile(String name) {
