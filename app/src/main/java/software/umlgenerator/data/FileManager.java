@@ -30,11 +30,13 @@ public class FileManager implements IFileManager {
 
         LogicalParser parser = new LogicalParser();
         PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
+        XMIWriter xmiwriter = new XMIWriter(file);
 
         parsers = new ArrayList<>();
         parsers.add(parser);
         for(int i = 0; i < parsers.size(); i++){
             parsers.get(i).addWriter(plantWriter);
+            parsers.get(i).addWriter(xmiwriter);
         }
 
         writeStart();
