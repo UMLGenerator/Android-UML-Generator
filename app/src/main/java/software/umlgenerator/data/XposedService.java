@@ -1,5 +1,6 @@
 package software.umlgenerator.data;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -59,8 +60,8 @@ public class XposedService extends Service {
                 break;
             case GENERATE:
                 try {
-                    getPendingIntentForContent().send();
                     dismissInForeground();
+                    getPendingIntentForContent().send();
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
@@ -166,7 +167,7 @@ public class XposedService extends Service {
                 .setOngoing(true);
 
         if (shouldWrite) {
-            mBuilder.setContentIntent(getPendingIntentForContent());
+            mBuilder.setContentIntent(getPendingIntentForRemote(GENERATE));
         } else {
             mBuilder.setContent(getRemoteViews());
         }
@@ -176,6 +177,7 @@ public class XposedService extends Service {
 
     private void dismissInForeground() {
         stopForeground(true);
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(FOREGROUND_ID);
     }
 
     private class XposedMessageHandler extends Handler {

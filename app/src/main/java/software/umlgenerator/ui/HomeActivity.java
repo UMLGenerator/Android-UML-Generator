@@ -46,16 +46,6 @@ public class HomeActivity extends BaseActivity implements RecyclerViewClickListe
         setSupportActionBar(toolbar);
 
         createAppInfoList();
-
-        umlService.emailPicture("mbpeele@email.wm.edu")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ActivitySubscriber<ResponseBody>(this) {
-                    @Override
-                    public void onSafeNext(ResponseBody data, BaseActivity activity) {
-                        Logg.log("UPLOADED?");
-                    }
-                });
     }
 
     @Override

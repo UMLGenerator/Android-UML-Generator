@@ -5,15 +5,15 @@ import android.net.Uri;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 import software.umlgenerator.data.model.parcelables.ParcelablePackage;
-import software.umlgenerator.data.model.xml.ClassXMLElement;
 import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
-import java.util.List;
 
 /**
  * Created by mbpeele on 2/24/16.
@@ -30,6 +30,7 @@ public class FileManager implements IFileManager {
     public FileManager(String name) {
         file = getXMLFile(name);
         persister = new Persister();
+        classList = new ArrayList<>();
         packageElement = new PackageXMLElement(file.getName());
     }
 
