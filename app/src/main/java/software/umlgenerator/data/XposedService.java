@@ -76,7 +76,7 @@ public class XposedService extends Service {
     public IBinder onBind(Intent intent) {
         applicationInfo = intent.getParcelableExtra(APPLICATION_INFO);
         shouldWrite = intent.getBooleanExtra(SHOULD_WRITE, true);
-        fileManager = new FileManager(applicationInfo.packageName);
+        fileManager = new FileManager(applicationInfo.packageName, applicationInfo.packageName + "-plantUML");
 
         showInForeground();
 

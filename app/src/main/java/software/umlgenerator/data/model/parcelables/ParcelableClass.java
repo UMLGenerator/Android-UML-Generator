@@ -19,14 +19,6 @@ public class ParcelableClass implements Parcelable {
         setName(clazz.getName());
     }
 
-    public void setName(String newName) {
-        name = newName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     @Override
     public int describeContents() {
         return 0;
