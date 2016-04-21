@@ -34,7 +34,7 @@ public class FileActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ActivitySubscriber<Object>(this) {
                     @Override
-                    public void onNext(Object o) {
+                    public void onSafeNext(Object data, BaseActivity activity) {
 
                     }
                 });

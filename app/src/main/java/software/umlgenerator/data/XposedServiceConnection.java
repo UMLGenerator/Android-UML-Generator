@@ -53,9 +53,17 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
     }
 
     @Override
-    public void sendClassMessage(Class clazz) {
+    public void sendBeforeClassMessage(Class clazz) {
         Message message = Message.obtain();
-        message.what = CLASS_CALLED;
+        message.what = CLASS_BEFORE_CALLED;
+        message.setData(createMessageBundle(new ParcelableClass(clazz)));
+        checkIfBound(message);
+    }
+
+    @Override
+    public void sendAfterClassMessage(Class clazz) {
+        Message message = Message.obtain();
+        message.what = CLASS_AFTER_CALLED;
         message.setData(createMessageBundle(new ParcelableClass(clazz)));
         checkIfBound(message);
     }

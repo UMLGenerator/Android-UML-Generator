@@ -40,34 +40,9 @@ public class FileManager implements IFileManager {
         writeToFile(packageElement);
     }
 
-    @Override
-    public void onClassCalled(ParcelableClass parcelableClass) {
-        targetClass = parcelableClass;
-        //If first class, only have to add it to the list
-        if(classList.isEmpty()){
-            classList.add(parcelableClass);
-        }
-        //If its not the first class, more checks
-        else {
-            //if there is a method, can write that method from previous class to target
-            //and no matter what add the new class to the list
-            if(method != null) {
-                writeParsedValue(classList.get(0), method, targetClass);
-                method = null;
-            }
-            else{
-                writeParsedValue(classList.get(0), targetClass);
-            }
-            classList.add(0, parcelableClass);
-        }
-
-//        packageElement.addClassElement(new ClassXMLElement(parcelableClass));
-//
-//        writeToFile(packageElement);
-    }
-
 
     //***CURRENTLY NOT IN USE, BUT WANT TO BE***
+    @Override
     public void onBeforeClassCalled(ParcelableClass parcelableClass){
         targetClass = parcelableClass;
         //If first class, only have to add it to the list
@@ -89,6 +64,7 @@ public class FileManager implements IFileManager {
         }
     }
     //***CURRENTLY NOT IN USE, BUT WANT TO BE***
+    @Override
     public void onAfterClassCalled(ParcelableClass parcelableClass){
         if(classList.get(0) == parcelableClass){
             classList.remove(0);
