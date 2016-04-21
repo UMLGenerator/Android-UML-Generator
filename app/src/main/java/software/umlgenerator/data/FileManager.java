@@ -21,17 +21,21 @@ public class FileManager implements IFileManager {
     private File file;
     private File plantUML;
     private PackageXMLElement packageElement;
-    private ArrayList<UtilityWriter> writers;
+    private ArrayList<Parser> parsers;
 
     public FileManager(String name, String plantUMLName) {
         file = getXMLFile(name);
         plantUML = getplantUMLFile(plantUMLName);
         packageElement = new PackageXMLElement(file.getName());
 
+        LogicalParser parser = new LogicalParser();
         PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
 
-        writers = new ArrayList<>();
-        writers.add(plantWriter);
+        parsers = new ArrayList<>();
+        parsers.add(parser);
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).addWriter(plantWriter);
+        }
 
         writeStart();
     }
@@ -44,48 +48,48 @@ public class FileManager implements IFileManager {
 
     @Override
     public void writeStart() {
-        for(int i = 0; i < writers.size(); i++){
-            writers.get(i).writeStart();
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).start();
         }
     }
 
     @Override
     public void onBeforeClassCalled(ParcelableClass parcelableClass) {
 
-        for(int i = 0; i < writers.size(); i++){
-            writers.get(i).classStart(parcelableClass);
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).classStart(parcelableClass);
         }
     }
 
     @Override
     public void onAfterClassCalled(ParcelableClass parcelableClass) {
 
-        for(int i = 0; i < writers.size(); i++){
-            writers.get(i).classEnd(parcelableClass);
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).classEnd(parcelableClass);
         }
     }
 
     @Override
     public void onBeforeMethodCalled(ParcelableMethod parcelableMethod) {
 
-        for (int i = 0; i < writers.size(); i++){
-            writers.get(i).methodStart(parcelableMethod);
+        for (int i = 0; i < parsers.size(); i++){
+            parsers.get(i).methodStart(parcelableMethod);
         }
     }
 
     @Override
     public void onAfterMethodCalled(ParcelableMethod parcelableMethod) {
 
-        for(int i = 0; i < writers.size(); i++){
-            writers.get(i).methodEnd(parcelableMethod);
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).methodEnd(parcelableMethod);
         }
     }
 
     @Override
     public void writeEnd() {
         Logg.log("WRITE END");
-        for(int i = 0; i < writers.size(); i++){
-            writers.get(i).writeEnd();
+        for(int i = 0; i < parsers.size(); i++){
+            parsers.get(i).stop();
         }
     }
 

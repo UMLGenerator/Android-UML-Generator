@@ -11,15 +11,13 @@ import software.umlgenerator.data.model.parcelables.ParcelableMethod;
  */
 public interface UtilityWriter {
 
-    //markers for when classes and methods are called and end
-    public void classStart(ParcelableClass parcelableClass);
-    public void classEnd(ParcelableClass parcelableClass);
-    public void methodStart(ParcelableMethod parcelableMethod);
-    public void methodEnd(ParcelableMethod parcelableMethod);
-
     //start and end tags
     public void writeStart();
     public void writeEnd();
+
+    //for the beggining and ending of classes
+    public void writeClassStart(ParcelableClass parcelableClass);
+    public void writeClassEnd(ParcelableClass parcelableClass);
 
     //for addition feature (used in plantUML) early in the writing
     public void writeLegend(ParcelableClass first);
