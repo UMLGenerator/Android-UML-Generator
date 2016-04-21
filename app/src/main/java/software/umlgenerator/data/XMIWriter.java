@@ -33,15 +33,6 @@ public class XMIWriter implements UtilityWriter {
         //do nothing
     }
     public void writeEnd() {
-
-    }
-
-    //for the beggining and ending of classes
-    public void writeClassStart(ParcelableClass parcelableClass) {
-        //don't need to do anything
-    }
-
-    public void writeClassEnd(ParcelableClass parcelableClass) {
         //TO WRITE FILE:
         //populate OwnedMemberList
         OwnedMemberList memberList = new OwnedMemberList();
@@ -74,6 +65,15 @@ public class XMIWriter implements UtilityWriter {
             e.printStackTrace();
             Logg.log("Failed to write XMI file");
         }
+    }
+
+    //for the beggining and ending of classes
+    public void writeClassStart(ParcelableClass parcelableClass) {
+        //don't need to do anything
+    }
+
+    public void writeClassEnd(ParcelableClass parcelableClass) {
+        //don't need to do anything
     }
 
     //for addition feature (used in plantUML) early in the writing
@@ -118,6 +118,5 @@ public class XMIWriter implements UtilityWriter {
     private ClassXMLElement checkDict(ParcelableClass clazz) {
         if (classDict.containsKey(clazz.getName())) classDict.put(clazz.getName(), new ClassXMLElement(clazz));
         return classDict.get(clazz.getName());
-
     }
 }
