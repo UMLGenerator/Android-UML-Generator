@@ -30,6 +30,7 @@ public class ClassXMLElement extends BaseXMLElement<ParcelableClass> {
     public ClassXMLElement(ParcelableClass parcelableClass) {
         super(parcelableClass.getName());
         setData(parcelableClass);
+        name = parcelableClass.getName();
     }
 
     public String getXMIID() {

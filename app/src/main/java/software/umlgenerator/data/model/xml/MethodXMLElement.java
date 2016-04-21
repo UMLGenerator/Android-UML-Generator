@@ -39,6 +39,7 @@ public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
     public MethodXMLElement(ParcelableMethod parcelableMethod) {
         super(parcelableMethod.getMethodName());
         setData(parcelableMethod);
+        name = parcelableMethod.getMethodName();
     }
 
     public void setSendEvent(String sendid) {
