@@ -83,6 +83,7 @@ public class FileManager implements IFileManager {
 
     @Override
     public void writeEnd() {
+        Logg.log("WRITE END");
         for(int i = 0; i < writers.size(); i++){
             writers.get(i).writeEnd();
         }
