@@ -1,5 +1,7 @@
 package software.umlgenerator.data;
 
+import android.util.Log;
+
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -116,7 +118,7 @@ public class XMIWriter implements UtilityWriter {
     }
 
     private ClassXMLElement checkDict(ParcelableClass clazz) {
-        if (classDict.containsKey(clazz.getName())) classDict.put(clazz.getName(), new ClassXMLElement(clazz));
+        if (!classDict.containsKey(clazz.getName())) classDict.put(clazz.getName(), new ClassXMLElement(clazz));
         return classDict.get(clazz.getName());
     }
 }

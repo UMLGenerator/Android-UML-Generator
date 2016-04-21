@@ -3,6 +3,8 @@ package software.umlgenerator.data.model.xml;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
+import java.util.UUID;
+
 import software.umlgenerator.data.model.parcelables.ParcelableFragment;
 
 /**
@@ -24,6 +26,7 @@ public class FragmentXMLElement extends BaseXMLElement<ParcelableFragment> {
     public FragmentXMLElement(ParcelableFragment parcelableFragment) {
         super(parcelableFragment.getName());
         setData(parcelableFragment);
+        xmiid = UUID.randomUUID().toString();
     }
 
     public void setCovered(String classid) {

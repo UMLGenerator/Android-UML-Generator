@@ -3,6 +3,8 @@ package software.umlgenerator.data.model.xml;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
+import java.util.UUID;
+
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 
 /**
@@ -40,6 +42,7 @@ public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
         super(parcelableMethod.getMethodName());
         setData(parcelableMethod);
         name = parcelableMethod.getMethodName();
+        xmiid = UUID.randomUUID().toString();
     }
 
     public void setSendEvent(String sendid) {

@@ -3,6 +3,7 @@ package software.umlgenerator.data.model.xml;
 import org.simpleframework.xml.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Caedus on 4/8/2016.
@@ -19,4 +20,8 @@ public class UMLModel extends ArrayList<PackagedElement> {
 
     @Attribute
     String name = "RootModel";
+
+    public UMLModel() {
+        xmiid = UUID.randomUUID().toString();
+    }
 }

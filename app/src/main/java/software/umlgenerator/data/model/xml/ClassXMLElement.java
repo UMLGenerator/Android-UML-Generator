@@ -5,6 +5,8 @@ import org.simpleframework.xml.Root;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 
+import java.util.*;
+
 /**
  * Created by mbpeele on 2/26/16.
  */
@@ -31,6 +33,7 @@ public class ClassXMLElement extends BaseXMLElement<ParcelableClass> {
         super(parcelableClass.getName());
         setData(parcelableClass);
         name = parcelableClass.getName();
+        xmiid = UUID.randomUUID().toString();
     }
 
     public String getXMIID() {

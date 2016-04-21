@@ -2,6 +2,8 @@ package software.umlgenerator.data.model.xml;
 
 import org.simpleframework.xml.*;
 
+import java.util.UUID;
+
 /**
  * Created by Caedus on 4/8/2016.
  */
@@ -36,6 +38,7 @@ public class PackagedElement /*extends BaseXMLElement*/ { //add extending
     public PackagedElement(String xmitype, String name) {
         this.xmitype = xmitype;
         this.name = name;
+        xmiid = UUID.randomUUID().toString();
     }
 
     public PackagedElement(String name, String isAbstract, String isFinalSpecification, String isLeaf, String xmitype, OwnedMemberList memberList) {
@@ -45,5 +48,6 @@ public class PackagedElement /*extends BaseXMLElement*/ { //add extending
         this.isLeaf = isLeaf;
         this.xmitype = xmitype;
         ownedMemberList = memberList;
+        xmiid = UUID.randomUUID().toString();
     }
 }

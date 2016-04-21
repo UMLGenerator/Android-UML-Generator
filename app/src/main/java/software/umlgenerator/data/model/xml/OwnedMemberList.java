@@ -4,6 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Caedus on 4/8/2016.
@@ -26,5 +27,9 @@ public class OwnedMemberList extends ArrayList<BaseXMLElement> {
 
     @Attribute(name = "xmi:type")
     String xmitype = "uml:Interaction";
+
+    public OwnedMemberList() {
+        xmiid = UUID.randomUUID().toString();
+    }
 
 }
