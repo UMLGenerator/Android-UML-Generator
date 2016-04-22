@@ -18,11 +18,11 @@ public class XMI {
     @Attribute(name = "xmlns:xmi")
     String xmlnsxmi = "http://schema.omg.org/spec/XMI/2.1";
 
-    @Element
+    @Element(name = "xmi:Documenation")
     XMIDocumentation documentation;
 
-    @ElementList
-    UMLModel model;
+    @ElementList(name = "uml:Model", type = PackagedElement.class)
+    UMLModel<PackagedElement> model;
 
     public XMI(XMIDocumentation xmidoc, UMLModel umlModel) {
         documentation = xmidoc;

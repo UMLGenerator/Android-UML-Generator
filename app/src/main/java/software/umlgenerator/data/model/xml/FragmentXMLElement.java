@@ -11,7 +11,7 @@ import software.umlgenerator.data.model.parcelables.ParcelableFragment;
  * Created by Caedus on 4/7/2016.
  */
 @Root(name = "fragment")
-public class FragmentXMLElement extends BaseXMLElement<ParcelableFragment> {
+public class FragmentXMLElement /*extends BaseXMLElement<ParcelableFragment>*/ {
 
     @Attribute(name = "xmi:id")
     String xmiid;
@@ -24,8 +24,8 @@ public class FragmentXMLElement extends BaseXMLElement<ParcelableFragment> {
 
 
     public FragmentXMLElement(ParcelableFragment parcelableFragment) {
-        super(parcelableFragment.getName());
-        setData(parcelableFragment);
+        //super(parcelableFragment.getName());
+        //setData(parcelableFragment);
         xmiid = UUID.randomUUID().toString();
     }
 

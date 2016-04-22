@@ -32,10 +32,10 @@ public class PackagedElement /*extends BaseXMLElement*/ { //add extending
     @Attribute(name = "xmi:type")
     String xmitype; //= "uml:Collaboration"; = "uml:Model"
 
-    @ElementList(required = false)
+    @Element(required = false, name = "ownedMember")
     OwnedMemberList ownedMemberList;
 
-    public PackagedElement(String xmitype, String name) {
+    public PackagedElement(String name, String xmitype) {
         this.xmitype = xmitype;
         this.name = name;
         xmiid = UUID.randomUUID().toString();

@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 
 @Root(name = "uml:Model")
-public class UMLModel extends ArrayList<PackagedElement> {
+public class UMLModel<T> extends ArrayList<PackagedElement> {
 
     @Attribute(name = "xmi:id")
     String xmiid;

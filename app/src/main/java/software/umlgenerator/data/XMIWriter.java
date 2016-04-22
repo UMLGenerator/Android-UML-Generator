@@ -40,15 +40,16 @@ public class XMIWriter implements UtilityWriter {
         OwnedMemberList memberList = new OwnedMemberList();
 
         for (ClassXMLElement c : classDict.values()) {
-            memberList.add(c);
+            memberList.classes.add(c);
         }
+        Logg.log(memberList.classes.toString());
 
         for (MethodXMLElement m : methodList) {
-            memberList.add(m);
+            memberList.methods.add(m);
         }
 
         for (FragmentXMLElement f : fragList) {
-            memberList.add(f);
+            memberList.fragments.add(f);
         }
 
         //setup tags, etc
@@ -85,16 +86,16 @@ public class XMIWriter implements UtilityWriter {
 
     //writing the values
     public void writeValue(ParcelableClass from, ParcelableClass to) {
-        ClassXMLElement clazz1 = checkDict(from);
-        ClassXMLElement clazz2 = checkDict(to);
+        //ClassXMLElement clazz1 = checkDict(from);
+        //ClassXMLElement clazz2 = checkDict(to);
 
-        FragmentXMLElement frag1 = new FragmentXMLElement(new ParcelableFragment(from.getClass()));
+        /*FragmentXMLElement frag1 = new FragmentXMLElement(new ParcelableFragment(from.getClass()));
         frag1.setCovered(clazz1.getXMIID());
         fragList.add(frag1);
 
         FragmentXMLElement frag2 = new FragmentXMLElement(new ParcelableFragment(to.getClass()));
         frag2.setCovered(clazz2.getXMIID());
-        fragList.add(frag2);
+        fragList.add(frag2);*/
 
         //method later
     }

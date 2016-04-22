@@ -12,7 +12,7 @@ import software.umlgenerator.data.model.parcelables.ParcelableMethod;
  */
 
 @Root(name = "message")
-public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
+public class MethodXMLElement /*extends BaseXMLElement<ParcelableMethod>*/ {
 
     @Attribute(name = "xmi:id")
     String xmiid;
@@ -39,10 +39,11 @@ public class MethodXMLElement extends BaseXMLElement<ParcelableMethod> {
     String sendEvent;
 
     public MethodXMLElement(ParcelableMethod parcelableMethod) {
-        super(parcelableMethod.getMethodName());
-        setData(parcelableMethod);
+        //super(parcelableMethod.getMethodName());
+        //setData(parcelableMethod);
         name = parcelableMethod.getMethodName();
         xmiid = UUID.randomUUID().toString();
+        messageSort = "sycnhCall";
     }
 
     public void setSendEvent(String sendid) {

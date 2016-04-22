@@ -12,7 +12,7 @@ import java.util.*;
  */
 
 @Root(name = "lifeline")
-public class ClassXMLElement extends BaseXMLElement<ParcelableClass> {
+public class ClassXMLElement /*extends BaseXMLElement<ParcelableClass>*/ {
 
     @Attribute(name = "xmi:id")
     String xmiid;
@@ -30,10 +30,11 @@ public class ClassXMLElement extends BaseXMLElement<ParcelableClass> {
     String represents;
 
     public ClassXMLElement(ParcelableClass parcelableClass) {
-        super(parcelableClass.getName());
-        setData(parcelableClass);
+       // super(parcelableClass.getName());
+        //setData(parcelableClass);
         name = parcelableClass.getName();
         xmiid = UUID.randomUUID().toString();
+        represents = UUID.randomUUID().toString();
     }
 
     public String getXMIID() {

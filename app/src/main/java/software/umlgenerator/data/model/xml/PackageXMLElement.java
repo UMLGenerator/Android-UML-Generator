@@ -16,8 +16,8 @@ public class PackageXMLElement extends BaseXMLElement<ParcelablePackage> {
         setData(parcelablePackage);
     }
 
-    @Override
-    public void addElement(BaseXMLElement baseXMLElement) {
+   /* @Override
+    public void addElement(BaseElement baseXMLElement) {
         if (baseXMLElement instanceof ClassXMLElement) {
             addClassElement((ClassXMLElement) baseXMLElement);
             return;
@@ -48,5 +48,5 @@ public class PackageXMLElement extends BaseXMLElement<ParcelablePackage> {
                 return;
             }
         }
-    }
+    }*/
 }
