@@ -42,7 +42,6 @@ public class XMIWriter implements UtilityWriter {
         for (ClassXMLElement c : classDict.values()) {
             memberList.classes.add(c);
         }
-        Logg.log(memberList.classes.toString());
 
         for (MethodXMLElement m : methodList) {
             memberList.methods.add(m);
@@ -54,7 +53,7 @@ public class XMIWriter implements UtilityWriter {
 
         //setup tags, etc
         PackagedElement pEl1= new PackagedElement("Model", "uml:Model");
-        PackagedElement pEl2 = new PackagedElement("Collaboration1", "false", "false", "false", "uml:Collaboration", memberList);
+        PackagedElement pEl2 = new PackagedElement("Collaboration1", "false", "false", "false", "uml:Collaboration", memberList, new OwnedAttribute("role1"), new OwnedAttribute("role2"));
 
         UMLModel umlModel = new UMLModel();
         umlModel.add(pEl1);

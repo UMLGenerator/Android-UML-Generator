@@ -35,19 +35,27 @@ public class PackagedElement /*extends BaseXMLElement*/ { //add extending
     @Element(required = false, name = "ownedMember")
     OwnedMemberList ownedMemberList;
 
+    @Element(name = "ownedAttribute", required = false)
+    OwnedAttribute role1;
+
+    @Element(name = "ownedAttribute ", required = false)
+    OwnedAttribute role2;
+
     public PackagedElement(String name, String xmitype) {
         this.xmitype = xmitype;
         this.name = name;
         xmiid = UUID.randomUUID().toString();
     }
 
-    public PackagedElement(String name, String isAbstract, String isFinalSpecification, String isLeaf, String xmitype, OwnedMemberList memberList) {
+    public PackagedElement(String name, String isAbstract, String isFinalSpecification, String isLeaf, String xmitype, OwnedMemberList memberList, OwnedAttribute role1, OwnedAttribute role2) {
         this.name = name;
         this.isAbstract = isAbstract;
         this.isFinalSpecification = isFinalSpecification;
         this.isLeaf = isLeaf;
         this.xmitype = xmitype;
         ownedMemberList = memberList;
+        this.role1 = role1;
+        this.role2 = role2;
         xmiid = UUID.randomUUID().toString();
     }
 }
