@@ -2,7 +2,6 @@ package software.umlgenerator.data;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -16,7 +15,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
-import software.umlgenerator.data.model.parcelables.ParcelablePackage;
 
 /**
  * Created by mbpeele on 4/1/16.
@@ -42,14 +40,6 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
     public void onServiceDisconnected(ComponentName component) {
         messenger = null;
         isBound = false;
-    }
-
-    @Override
-    public void sendPackageMessage(ApplicationInfo applicationInfo) {
-        Message message = Message.obtain();
-        message.what = PACKAGE_CALLED;
-        message.setData(createMessageBundle(new ParcelablePackage(applicationInfo)));
-        checkIfBound(message);
     }
 
     @Override

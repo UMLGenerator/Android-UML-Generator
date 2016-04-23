@@ -46,14 +46,6 @@
             android:src="@drawable/ic_play_arrow_24dp" />
 
         <ImageButton
-            android:id="@+id/service_remoteview_stop"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_pause_24dp" />
-
-        <ImageButton
             android:id="@+id/service_remoteview_generate"
             android:layout_weight="1"
             android:layout_width="0dp"

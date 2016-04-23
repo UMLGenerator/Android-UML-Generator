@@ -61,8 +61,6 @@ public class XposedLoader implements IXposedHookLoadPackage, IXposedHookZygoteIn
                          final LoadPackageParam loadPackageParam) throws IOException, ClassNotFoundException {
         final XposedServiceConnection connection = new XposedServiceConnection();
 
-        connection.sendPackageMessage(loadPackageParam.appInfo);
-
         ComponentName componentName =
                 new ComponentName(Common.PACKAGE_NAME, Common.SERVICE_CLASS);
 

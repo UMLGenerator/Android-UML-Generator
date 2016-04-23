@@ -28,16 +28,12 @@ public class UMLService {
         service = retrofit.create(IUMLService.class);
     }
 
-    public Observable<ResponseBody> testConnection() {
-        return service.testConnection();
-    }
-
-    public Observable<ResponseBody> uploadFileToServer(File xmiFile) {
+    public Observable<ResponseBody> uploadPlantUMLFile(File plantUMLFile) {
         RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), xmiFile);
+                RequestBody.create(MediaType.parse("multipart/form-data"), plantUMLFile);
 
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("file", xmiFile.getName(), requestFile);
+                MultipartBody.Part.createFormData("file", plantUMLFile.getName(), requestFile);
 
         return service.uploadFile(body);
     }

@@ -19,7 +19,7 @@ public class PlantUMLWriter implements UtilityWriter {
     private String legend;
 
     //gives the writer a file to write to
-    public PlantUMLWriter(File fl){
+    public PlantUMLWriter(File fl) {
         file = fl;
     }
 
