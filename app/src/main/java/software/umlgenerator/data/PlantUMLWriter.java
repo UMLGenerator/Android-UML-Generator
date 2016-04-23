@@ -12,7 +12,7 @@ import software.umlgenerator.util.Logg;
 /**
  * Created by shorj_000 on 4/20/2016.
  */
-public class PlantUMLWriter implements UtilityWriter {
+class PlantUMLWriter implements UtilityWriter {
 
     private FileWriter writer;
     private File file;

@@ -1,7 +1,5 @@
 package software.umlgenerator.data;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import software.umlgenerator.util.Logg;
 /**
  * Created by shorj_000 on 4/21/2016.
  */
-public class LogicalParser implements Parser {
+class LogicalParser implements Parser {
 
     private List<ParcelableClass> classList;
     private List<ParcelableMethod> method;

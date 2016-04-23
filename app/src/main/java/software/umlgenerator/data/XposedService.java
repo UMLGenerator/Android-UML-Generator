@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.SpannableString;
@@ -19,6 +20,8 @@ import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import java.lang.ref.WeakReference;
 
 import software.umlgenerator.R;
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
@@ -83,7 +86,7 @@ public class XposedService extends Service {
         if (messenger == null) {
             synchronized (XposedService.class) {
                 if (messenger == null) {
-                    messenger = new Messenger(new XposedMessageHandler());
+                    messenger = new Messenger(new XposedMessageHandler(this));
                 }
             }
         }
@@ -154,43 +157,46 @@ public class XposedService extends Service {
         ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(FOREGROUND_ID);
     }
 
-    private class XposedMessageHandler extends Handler {
+    static class XposedMessageHandler extends Handler {
+
+        private WeakReference<XposedService> weakReference;
+
+        public XposedMessageHandler(XposedService xposedService) {
+            weakReference = new WeakReference<>(xposedService);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            Bundle bundle = msg.getData();
-            switch (msg.what) {
-                case IXposedServiceConnection.CLASS_BEFORE_CALLED:
-                    if (shouldWrite) {
-                        bundle.setClassLoader(ParcelableClass.class.getClassLoader());
-                        ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onBeforeClassCalled(parcelable);
-                    }
-                    break;
+            XposedService xposedService = weakReference.get();
+            if (xposedService != null) {
+                boolean shouldWrite = xposedService.shouldWrite;
+                if (shouldWrite) {
+                    FileManager fileManager = xposedService.fileManager;
+                    Bundle bundle = msg.getData();
+                    switch (msg.what) {
+                        case IXposedServiceConnection.CLASS_BEFORE_CALLED:
+                            fileManager.onBeforeClassCalled((ParcelableClass) getParcelable(bundle, ParcelableClass.class));
+                            break;
 
-                case IXposedServiceConnection.CLASS_AFTER_CALLED:
-                    if (shouldWrite) {
-                        bundle.setClassLoader(ParcelableClass.class.getClassLoader());
-                        ParcelableClass parcelable = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onAfterClassCalled(parcelable);
-                    }
-                    break;
+                        case IXposedServiceConnection.CLASS_AFTER_CALLED:
+                            fileManager.onAfterClassCalled((ParcelableClass) getParcelable(bundle, ParcelableClass.class));
+                            break;
 
-                case IXposedServiceConnection.METHOD_BEFORE_CALLED:
-                    if (shouldWrite) {
-                        bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
-                        ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onBeforeMethodCalled(parcelableMethod);
-                    }
-                    break;
+                        case IXposedServiceConnection.METHOD_BEFORE_CALLED:
+                            fileManager.onBeforeMethodCalled((ParcelableMethod) getParcelable(bundle, ParcelableMethod.class));
+                            break;
 
-                case IXposedServiceConnection.METHOD_AFTER_CALLED:
-                    if (shouldWrite) {
-                        bundle.setClassLoader(ParcelableMethod.class.getClassLoader());
-                        ParcelableMethod parcelableMethod = bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
-                        fileManager.onAfterMethodCalled(parcelableMethod);
+                        case IXposedServiceConnection.METHOD_AFTER_CALLED:
+                            fileManager.onAfterMethodCalled((ParcelableMethod) getParcelable(bundle, ParcelableMethod.class));
+                            break;
                     }
-                    break;
+                }
             }
+        }
+
+        private Parcelable getParcelable(Bundle bundle, Class clazz) {
+            bundle.setClassLoader(clazz.getClassLoader());
+            return bundle.getParcelable(IXposedServiceConnection.BUNDLE_KEY);
         }
     }
 }

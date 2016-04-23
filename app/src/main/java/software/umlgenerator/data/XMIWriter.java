@@ -1,23 +1,30 @@
 package software.umlgenerator.data;
 
-import android.util.Log;
-
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableFragment;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
-import software.umlgenerator.data.model.xml.*;
+import software.umlgenerator.data.model.xml.ClassXMLElement;
+import software.umlgenerator.data.model.xml.FragmentXMLElement;
+import software.umlgenerator.data.model.xml.MethodXMLElement;
+import software.umlgenerator.data.model.xml.OwnedAttribute;
+import software.umlgenerator.data.model.xml.OwnedMemberList;
+import software.umlgenerator.data.model.xml.PackagedElement;
+import software.umlgenerator.data.model.xml.UMLModel;
+import software.umlgenerator.data.model.xml.XMI;
+import software.umlgenerator.data.model.xml.XMIDocumentation;
 import software.umlgenerator.util.Logg;
 
 /**
  * Created by Caedus on 4/21/2016.
  */
-public class XMIWriter implements UtilityWriter {
+class XMIWriter implements UtilityWriter {
 
     private File file;
     Serializer serializer = new Persister();

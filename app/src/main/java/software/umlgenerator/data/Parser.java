@@ -6,7 +6,7 @@ import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 /**
  * Created by shorj_000 on 4/21/2016.
  */
-public interface Parser {
+interface Parser {
 
     //adds writers that the parser will give its data to
     public void addWriter(UtilityWriter writer);

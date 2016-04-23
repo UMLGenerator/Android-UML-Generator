@@ -1,15 +1,12 @@
 package software.umlgenerator.data;
 
-import java.io.File;
-import java.util.List;
-
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
 
 /**
  * Created by shorj_000 on 4/20/2016.
  */
-public interface UtilityWriter {
+interface UtilityWriter {
 
     //start and end tags
     public void writeStart();
