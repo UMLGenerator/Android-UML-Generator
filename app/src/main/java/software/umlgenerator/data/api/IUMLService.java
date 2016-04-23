@@ -14,8 +14,12 @@ import rx.Observable;
 interface IUMLService {
 
     @Multipart
-    @POST("upload")
-    Observable<ResponseBody> uploadFile(@Part MultipartBody.Part file);
+    @POST("uploadPlant")
+    Observable<ResponseBody> uploadPlantUMLFile(@Part MultipartBody.Part plantUMLFile);
+
+    @Multipart
+    @POST("uploadXMI")
+    Observable<ResponseBody> uploadXMIFile(@Part MultipartBody.Part xmiFile);
 
     @POST("email/{user}")
     Observable<ResponseBody> emailPicture(@Path("user") String email);
