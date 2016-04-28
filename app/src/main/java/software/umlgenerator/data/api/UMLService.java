@@ -31,23 +31,19 @@ public class UMLService {
     }
 
     @NonNull
-    public Observable<ResponseBody> uploadFiles(File plantUMLFile, File xmiFile) {
-        MultipartBody.Part plantBody = createRequestBody(plantUMLFile);
+    public Observable<ResponseBody> uploadFiles(File plantUMLFile, File xmiFile, String email) {
+        MultipartBody.Part plantBody = createRequestBody(plantUMLFile, "plantUML");
 
-        MultipartBody.Part xmiBody = createRequestBody(xmiFile);
+        MultipartBody.Part xmiBody = createRequestBody(xmiFile, "xmi");
 
-        return Observable.merge(service.uploadPlantUMLFile(plantBody), service.uploadXMIFile(xmiBody));
+        return service.uploadFiles(plantBody, xmiBody, email);
     }
 
     @NonNull
-    private MultipartBody.Part createRequestBody(File file) {
+    private MultipartBody.Part createRequestBody(File file, String fileName) {
         RequestBody plantRequestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        return MultipartBody.Part.createFormData("file", file.getName(), plantRequestFile);
-    }
-
-    public Observable<ResponseBody> emailPicture(String email) {
-        return service.emailPicture(email);
+        return MultipartBody.Part.createFormData(fileName, file.getName(), plantRequestFile);
     }
 }

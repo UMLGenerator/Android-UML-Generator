@@ -77,21 +77,26 @@ public class XposedService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        applicationInfo = intent.getParcelableExtra(APPLICATION_INFO);
-        shouldWrite = intent.getBooleanExtra(SHOULD_WRITE, true);
-        fileManager = new FileManager(applicationInfo.packageName);
+        if (intent.hasExtra(APPLICATION_INFO)) {
+            applicationInfo = intent.getParcelableExtra(APPLICATION_INFO);
+            shouldWrite = intent.getBooleanExtra(SHOULD_WRITE, true);
+            fileManager = new FileManager(applicationInfo.packageName);
 
-        showInForeground();
+            showInForeground();
 
-        if (messenger == null) {
-            synchronized (XposedService.class) {
-                if (messenger == null) {
-                    messenger = new Messenger(new XposedMessageHandler(this));
+            if (messenger == null) {
+                synchronized (XposedService.class) {
+                    if (messenger == null) {
+                        messenger = new Messenger(new XposedMessageHandler(this));
+                    }
                 }
             }
+
+            return messenger.getBinder();
         }
 
-        return messenger.getBinder();
+        throw new IllegalArgumentException("XposedService must be started with an " +
+                "APPLICATION_INFO object");
     }
 
     @Override
