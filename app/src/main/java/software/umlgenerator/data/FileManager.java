@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
-import software.umlgenerator.data.model.parcelables.ParcelablePackage;
-import software.umlgenerator.data.model.xml.PackageXMLElement;
 import software.umlgenerator.util.Common;
 import software.umlgenerator.util.Logg;
 
@@ -18,35 +16,29 @@ import software.umlgenerator.util.Logg;
  */
 public class FileManager implements IFileManager {
 
-    private File file;
-    private File plantUML;
-    private PackageXMLElement packageElement;
+    public static final String FILE_URIS = "fileUris";
+
+    private File xmiFile;
+    private File plantUMLFile;
     private ArrayList<Parser> parsers;
 
-    public FileManager(String name, String plantUMLName) {
-        file = getXMLFile(name);
-        plantUML = getplantUMLFile(plantUMLName);
-        packageElement = new PackageXMLElement(file.getName());
+    public FileManager(String name) {
+        xmiFile = getXMLFile(name + "-XMI");
+        plantUMLFile = getPlantUMLFile(name + "-plantUML");
 
         LogicalParser parser = new LogicalParser();
-        PlantUMLWriter plantWriter = new PlantUMLWriter(plantUML);
-        XMIWriter xmiwriter = new XMIWriter(file);
+        PlantUMLWriter plantWriter = new PlantUMLWriter(plantUMLFile);
+        XMIWriter xmiwriter = new XMIWriter(xmiFile);
 
         parsers = new ArrayList<>();
         parsers.add(parser);
-        for(int i = 0; i < parsers.size(); i++){
+        for (int i = 0; i < parsers.size(); i++) {
             parsers.get(i).addWriter(plantWriter);
             parsers.get(i).addWriter(xmiwriter);
         }
 
         writeStart();
     }
-
-    @Override
-    public void onPackageCalled(ParcelablePackage parcelablePackage) {
-        packageElement = new PackageXMLElement(parcelablePackage);
-    }
-
 
     @Override
     public void writeStart() {
@@ -104,7 +96,7 @@ public class FileManager implements IFileManager {
         return new File(dir, name);
     }
 
-    public File getplantUMLFile(String name) {
+    public File getPlantUMLFile(String name) {
         File dir = new File(Common.FILE_DIR);
 
         Logg.log("GETTING PLANTUML FILE: ", name);
@@ -112,7 +104,10 @@ public class FileManager implements IFileManager {
         return new File(dir, name);
     }
 
-    public Uri getFileUri() {
-        return Uri.fromFile(file);
+    public ArrayList<Uri> getFileUris() {
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(Uri.fromFile(xmiFile));
+        uris.add(Uri.fromFile(plantUMLFile));
+        return uris;
     }
 }

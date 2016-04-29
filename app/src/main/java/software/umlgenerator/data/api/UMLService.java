@@ -1,5 +1,7 @@
 package software.umlgenerator.data.api;
 
+import android.support.annotation.NonNull;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -28,21 +30,20 @@ public class UMLService {
         service = retrofit.create(IUMLService.class);
     }
 
-    public Observable<ResponseBody> testConnection() {
-        return service.testConnection();
+    @NonNull
+    public Observable<ResponseBody> uploadFiles(File plantUMLFile, File xmiFile, String email) {
+        MultipartBody.Part plantBody = createRequestBody(plantUMLFile, "plantUML");
+
+        MultipartBody.Part xmiBody = createRequestBody(xmiFile, "xmi");
+
+        return service.uploadFiles(plantBody, xmiBody, email);
     }
 
-    public Observable<ResponseBody> uploadFileToServer(File xmiFile) {
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), xmiFile);
+    @NonNull
+    private MultipartBody.Part createRequestBody(File file, String fileName) {
+        RequestBody plantRequestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("file", xmiFile.getName(), requestFile);
-
-        return service.uploadFile(body);
-    }
-
-    public Observable<ResponseBody> emailPicture(String email) {
-        return service.emailPicture(email);
+        return MultipartBody.Part.createFormData(fileName, file.getName(), plantRequestFile);
     }
 }

@@ -52,6 +52,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         compositeSubscription.remove(subscription);
     }
 
+    @Nullable
+    public ViewGroup getRoot() {
+        return root;
+    }
+
     public boolean hasConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null &&
@@ -61,10 +66,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void handleError(HttpException httpException) {
         Logg.log(getClass().getName(), httpException);
         httpException.printStackTrace();
-
-        Snackbar.make(root,
-                "SOME SHIT WENT WRONG",
-                Snackbar.LENGTH_LONG)
-                .show();
     }
 }

@@ -16,10 +16,7 @@ interface IXposedServiceConnection {
     int CLASS_AFTER_CALLED = 2;
     int METHOD_BEFORE_CALLED = 3;
     int METHOD_AFTER_CALLED = 4;
-    int PACKAGE_CALLED = 5;
     String BUNDLE_KEY = "IXposedServiceConnection";
-
-    void sendPackageMessage(ApplicationInfo applicationInfo);
 
     void sendBeforeClassMessage(Class clazz);
 
