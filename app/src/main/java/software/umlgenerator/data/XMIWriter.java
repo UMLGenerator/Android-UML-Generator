@@ -1,5 +1,7 @@
 package software.umlgenerator.data;
 
+import android.os.Parcel;
+
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -122,6 +124,10 @@ class XMIWriter implements UtilityWriter {
         meth.setSendEvent(frag1.getXMIID());
         meth.setReceiveEvent(frag2.getXMIID());
         methodList.add(meth);
+    }
+
+    public void writeReturnValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to){
+        //don't need to do anything
     }
 
     private ClassXMLElement checkDict(ParcelableClass clazz) {

@@ -89,6 +89,15 @@ class PlantUMLWriter implements UtilityWriter {
 
         writeLine(myString);
     }
+    public void writeReturnValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to){
+        //Constructs the line needing to be written for the method, using the from and to classes
+
+        String myString = (from.getName().replaceAll(legend, "") + " --> " +
+                to.getName().replaceAll(legend, "") + ": " +
+                method.getMethodName().replaceAll(legend, "")).replace("$", "_");
+
+        writeLine(myString);
+    }
 
     //actual writer
     public void writeLine(String write){

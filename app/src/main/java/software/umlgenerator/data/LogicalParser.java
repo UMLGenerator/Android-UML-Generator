@@ -5,6 +5,7 @@ import java.util.List;
 
 import software.umlgenerator.data.model.parcelables.ParcelableClass;
 import software.umlgenerator.data.model.parcelables.ParcelableMethod;
+import software.umlgenerator.data.ParcelableHolder;
 import software.umlgenerator.util.Logg;
 
 /**
@@ -17,13 +18,14 @@ class LogicalParser implements Parser {
     private ParcelableClass targetClass;
     private Boolean usedMethod = false;
     private Boolean firstClass = true;
-    private String legend;
     private ArrayList<UtilityWriter> writers;
+    private ArrayList<ParcelableHolder> returnList;
 
     public LogicalParser(){
         writers = new ArrayList<UtilityWriter>();
         classList = new ArrayList<ParcelableClass>();
         method = new ArrayList<ParcelableMethod>();
+        returnList = new ArrayList<ParcelableHolder>();
     }
 
     public void addWriter(UtilityWriter writer){
@@ -88,6 +90,11 @@ class LogicalParser implements Parser {
                 if(fromClass != null) {
                     try {
                         //System.out.println(fromClass.getName());
+
+                        //*********TODO:  If method is not void, add to returnList
+                        //if(method.get(0) != 'void';
+                            //returnList.add(new ParcelableHolder(fromClass, method.get(0), targetClass));
+
                         for(int i = 0; i < writers.size(); i++){
                             writers.get(i).writeValue(fromClass, method.get(0), targetClass);
                             writers.get(i).writeClassStart(targetClass);
@@ -108,7 +115,18 @@ class LogicalParser implements Parser {
             }
         }
     }
-    public void classEnd(ParcelableClass parcelableClass){
+    public void classEnd(ParcelableClass parcelableClass) {
+
+        //*********TODO: If class is member of returnList, write the return line
+        //for(int i = 0; i < returnList.size(); i++){
+            //if(returnList.get(i).getFrom().getName().equals(parcelableClass.getName()){
+                //ParcelableHolder holder = returnList.get(i);
+                //for(int i = 0; i < writers.size(); i++){
+                    //writers.get(i).writeReturnValue(holder.getTo, holder.getMethod, holder.getFrom);
+                //}
+            //}
+        //}
+
         for(int i = 0; i < writers.size(); i++){
             writers.get(i).writeClassEnd(parcelableClass);
         }

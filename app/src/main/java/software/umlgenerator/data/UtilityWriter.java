@@ -22,4 +22,5 @@ interface UtilityWriter {
     //writing the values
     public void writeValue(ParcelableClass from, ParcelableClass to);
     public void writeValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to);
+    public void writeReturnValue(ParcelableClass from, ParcelableMethod method, ParcelableClass to);
 }
