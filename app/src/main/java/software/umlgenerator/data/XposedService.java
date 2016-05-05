@@ -71,7 +71,7 @@ public class XposedService extends Service {
                 throw new IllegalArgumentException("Illegal code used to start XposedService: " + arg);
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Nullable
@@ -95,8 +95,7 @@ public class XposedService extends Service {
             return messenger.getBinder();
         }
 
-        throw new IllegalArgumentException("XposedService must be started with an " +
-                "APPLICATION_INFO object");
+       return null;
     }
 
     @Override

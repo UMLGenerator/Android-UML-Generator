@@ -25,8 +25,21 @@ public class DataStore {
         return prefs.edit();
     }
 
+    private SharedPreferences getPrefs() {
+        return prefs;
+    }
+
     public void setPackageNameToHook(String packageName, boolean hookFromStart) {
         String value = packageName + "," + hookFromStart;
         getEditor().putString(PACKAGE, value).apply();
+    }
+
+    public String getHookedPackageName() {
+        String string = prefs.getString(PACKAGE, "");
+        if (string.isEmpty()) {
+            return string;
+        }
+
+        return string.split(",")[0];
     }
 }
