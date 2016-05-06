@@ -17,26 +17,12 @@ public class ParcelableMethod implements Parcelable {
 
     private String methodName;
     private String declaringClassName;
+    private String returnType;
 
     public ParcelableMethod(Method method) {
+        setReturnType(method.getReturnType().getName());
         setMethodName(method.getName());
         setDeclaringClassName(method.getDeclaringClass().getName());
-    }
-
-    public void setMethodName(String newName) {
-        methodName = newName;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setDeclaringClassName(String className) {
-        declaringClassName = className;
-    }
-
-    public String getDeclaringClassName() {
-        return declaringClassName;
     }
 
     @Override

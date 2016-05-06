@@ -62,7 +62,8 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
     public void sendBeforeMethodMessage(Method method) {
         Message message = Message.obtain();
         message.what = METHOD_BEFORE_CALLED;
-        message.setData(createMessageBundle(new ParcelableMethod(method)));
+        Bundle bundle = createMessageBundle(new ParcelableMethod(method));
+        message.setData(bundle);
         checkIfBound(message);
     }
 
@@ -70,7 +71,8 @@ public class XposedServiceConnection implements ServiceConnection, IXposedServic
     public void sendAfterMethodMessage(Method method) {
         Message message = Message.obtain();
         message.what = METHOD_AFTER_CALLED;
-        message.setData(createMessageBundle(new ParcelableMethod(method)));
+        Bundle bundle = createMessageBundle(new ParcelableMethod(method));
+        message.setData(bundle);
         checkIfBound(message);
     }
 

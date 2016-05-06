@@ -8,6 +8,10 @@
     <string name="activity_file_email_input">Enter email for files</string>
     <string name="activity_file_email_send">Send!</string>
     <string name="activity_file_email_invalid">Invalid email input</string>
+    <string name="activity_file_saving">Uploading…</string>
+    <string name="activity_file_saved_dialog_title">Uploaded files!</string>
+    <string name="activity_file_saved_dialog_body">Check your email for your XMI and UML files.
+        Pressing \'OK\' will return to the home screen of this app.</string>
 
     <string name="xposed_hook_options_dialog_title">Hook Options</string>
     <string name="xposed_hook_options_dialog_body">Selecting "START" will hook the application
