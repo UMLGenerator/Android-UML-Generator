@@ -4,10 +4,18 @@ A developer wants to be able to trace the execution of a phone application visua
 
 Specific User Stories
 
-As a user, I want to be able to create a UML Diagram of an application so that I can know what it is doing behind the scenes
+As a user, I want to generate a UML diagram of an app so I can trace its logic and create an app that interacts with it.
 
-As a user and a developer, I want to be able to trace the running of ANY application on the phone.
+As a user, I want to create an XMI schema for an app so I can possibly convert that to other formats.
 
-As a developer, I want to be able to create a UML Diagram of my own application so that I can trace how it works, and easily find bugs
+As a project manager using Monitor, I want to see a UML diagram so I can quickly look at what my team has been working on.
 
-As a developer, I want to be able to choose if the supplied UML diagram has native Android calls or not, so that I can see how my application interacts with Android
+As a user, I want to make a sequence diagram so I can chart the control flow of an app to help pinpoint bugs.
+
+As a security professional using our app, I want to create a UML diagram of an app to help ensure it's secure enough.
+
+As a user, I want to create a sequence diagram for just part of a program, because I don’t need the whole large diagram.
+
+As a user, I want to view the XMI schema for each use case of an app so I can see which methods are called in each case.
+
+As a user, I want to use the start/pause feature of the app to selectively create XMI for the parts of an app I need to examine.
