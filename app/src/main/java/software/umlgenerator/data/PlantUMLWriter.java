@@ -85,7 +85,12 @@ class PlantUMLWriter implements UtilityWriter {
 
         String myString = (from.getName().replaceAll(legend, "") + " -> " +
                 to.getName().replaceAll(legend, "") + ": " +
-                method.getMethodName().replaceAll(legend, "")).replace("$", "_");
+                (method.getMethodName()).replaceAll(legend, "") +
+                method.getParameters()).replace("$", "_");
+//
+//        String myString = (from.getName().replaceAll(legend, "") + " -> " +
+//                to.getName().replaceAll(legend, "") + ": " +
+//                (method.getMethodName()).replaceAll(legend, "")).replace("$", "_");
 
         writeLine(myString);
     }
@@ -94,7 +99,7 @@ class PlantUMLWriter implements UtilityWriter {
 
         String myString = (from.getName().replaceAll(legend, "") + " --> " +
                 to.getName().replaceAll(legend, "") + ": " +
-                method.getMethodName().replaceAll(legend, "")).replace("$", "_");
+                method.getReturnType().replaceAll(legend, "")).replace("$", "_");
 
         writeLine(myString);
     }
