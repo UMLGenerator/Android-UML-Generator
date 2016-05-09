@@ -47,10 +47,26 @@ methods, usage program, and logic of services of a program. </p>
 
 <p><img src="https://github.com/UMLGenerator/Android-UML-Generator/blob/master/artifacts/ApplicationStructure.png?raw=true" alt=""></p>
 
-<p>After starting the GUI application (Monitor), the user selects an app they wish to track. Upon picking the application, the Xposed module hooks into all the methods of the given</p>
+<p>After starting the GUI application (Monitor), the user selects an app they wish to track. Upon picking the application, the Xposed module hooks into all the methods of the selected application. At this point we can tell whenever a method is called. After 'hooking' all methods the host application is launched. At this point we begin tracking whenever each method is called. When a method is used, we write the neccisary information about that method in two files. One is in a specific plantUML format the other is in a specific XMI file format. Every method call is tracked and recorded in order, until the user chooses to stop tracking. At this point the user inputs an email, and the XMI file and plantUML file are sent to the backend. On the backend, we first run the plantUML.jar, to convert the .txt file to a .png of the sequence diagram. With the .png, we then put it and the XMI file into a directory, zip it up, and email it to the user. We choose to email to the user because a cellular screen is incredibly hard to read all the information from such a large diagram.</p>
 
 <h3>
-<a id="using-android-uml-generator" class="anchor" href="#using-android-uml-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using Android UML Generator</h3>
+<a id="installing-and-using-android-uml-generator" class="anchor" href="#installing-and-using-android-uml-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing and Using Android UML Generator</h3>
+
+<p>Installation is the hardest part of using our Android UML Generator. Following these steps will allow anyone to install our Application:</p>
+
+<ol>
+<li>Install Xposed onto your phone, follow the link below. With the provided apk file install it on your phone. </li>
+<li>Launch the application and follow the instructions to install Xposed onto your phone (must have root access).</li>
+<li>Using our provided code, install our application (Monitor) onto your phone</li>
+<li>Open up the Xposed application again, and navigate to 'modules'. Click the Monitor module, it will ask you to soft reboot your phone. Once the reboot is done, you are ready to begin.</li>
+<li>To set up the backend for Android UML Generator install Flask onto the server of choice (follow the link below).</li>
+<li>Next download the backend <a href="https://github.com/UMLGenerator/UMLServer">here</a>
+</li>
+<li>Navigate to the directory you installed it on and run <code>python3 serverMain.py</code>
+</li>
+<li>On your device, launch the application and you are done!</li>
+<li>Follow the video above for a more in depth guide on how to actually use the application </li>
+</ol>
 
 <h3>
 <a id="tools-used" class="anchor" href="#tools-used" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools Used</h3>
