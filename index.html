@@ -45,7 +45,7 @@ methods, usage program, and logic of services of a program. </p>
 <h3>
 <a id="workflow-overview" class="anchor" href="#workflow-overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Workflow Overview</h3>
 
-<p><img src="https://github.com/UMLGenerator/Android-UML-Generator/blob/master/artifacts/ApplicationStructure.png?raw=true" alt=""></p>
+<p><img src="https://github.com/UMLGenerator/Android-UML-Generator/blob/master/artifacts/UpdatedArchitecturePicture.png?raw=true" alt=""></p>
 
 <p>After starting the GUI application (Monitor), the user selects an app they wish to track. Upon picking the application, the Xposed module hooks into all the methods of the selected application. At this point we can tell whenever a method is called. After 'hooking' all methods the host application is launched. At this point we begin tracking whenever each method is called. When a method is used, we write the neccisary information about that method in two files. One is in a specific plantUML format the other is in a specific XMI file format. Every method call is tracked and recorded in order, until the user chooses to stop tracking. At this point the user inputs an email, and the XMI file and plantUML file are sent to the backend. On the backend, we first run the plantUML.jar, to convert the .txt file to a .png of the sequence diagram. With the .png, we then put it and the XMI file into a directory, zip it up, and email it to the user. We choose to email to the user because a cellular screen is incredibly hard to read all the information from such a large diagram.</p>
 
