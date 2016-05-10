@@ -1,0 +1,49 @@
+### Organization
+Find our full organization page (including back and front end) [here] (https://github.com/UMLGenerator)
+
+### Purpose
+Execution flows of applications can sometimes be difficult to visualize without having UML
+diagrams. In particular, sequence diagrams allow for the capture of flow logic, logic
+methods, usage program, and logic of services of a program. 
+
+The goal of this project is to automatically generate sequence diagrams based on the usage of an application. We also generate an XMI file so that the UML diagram can be imported into StarUML.
+
+### Video Demonstration (Click to be redirected to youtube)
+[![Click here to be directed to the video!](http://img.youtube.com/vi/QTSzW8bSpdY/0.jpg)](https://www.youtube.com/watch?v=QTSzW8bSpdY "Android UML Generator Demo")
+
+### Workflow Overview
+![](https://github.com/UMLGenerator/Android-UML-Generator/blob/master/artifacts/UpdatedArchitecturePicture.png?raw=true)
+
+After starting the GUI application (Monitor), the user selects an app they wish to track. Upon picking the application, the Xposed module hooks into all the methods of the selected application. At this point we can tell whenever a method is called. After 'hooking' all methods the host application is launched. At this point we begin tracking whenever each method is called. When a method is used, we write the neccisary information about that method in two files. One is in a specific plantUML format the other is in a specific XMI file format. Every method call is tracked and recorded in order, until the user chooses to stop tracking. At this point the user inputs an email, and the XMI file and plantUML file are sent to the backend. On the backend, we first run the plantUML.jar, to convert the .txt file to a .png of the sequence diagram. With the .png, we then put it and the XMI file into a directory, zip it up, and email it to the user. We choose to email to the user because a cellular screen is incredibly hard to read all the information from such a large diagram.
+
+### Installing and Using Android UML Generator
+
+Installation is the hardest part of using our Android UML Generator. Following these steps will allow anyone to install our Application:
+
+1. Install Xposed onto your phone, follow the link below. With the provided apk file install it on your phone. 
+2. Launch the application and follow the instructions to install Xposed onto your phone (must have root access).
+3. Using our provided code, install our application (Monitor) onto your phone
+4. Open up the Xposed application again, and navigate to 'modules'. Click the Monitor module, it will ask you to soft reboot your phone. Once the reboot is done, you are ready to begin.
+5. To set up the backend for Android UML Generator install Flask onto the server of choice (follow the link below).
+6. Next download the backend [here](https://github.com/UMLGenerator/UMLServer)
+7. Navigate to the directory you installed it on and run `python3 serverMain.py`
+8. On your device, launch the application and you are done!
+9. Follow the video above for a more in depth guide on how to actually use the application 
+
+### Tools Used
+* [Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer)
+     Module used to gather data about which methods and classes are used my an application
+* [PlantUML](http://plantuml.com/)
+     Program used to take text file and turn it into a UML sequence diagram
+* [StarUML](http://staruml.io/)
+     Program that XMI can be imported into for modification of sequence diagram
+* [SimpleXML](http://simple.sourceforge.net/)
+     Framework used to make the process of writing XMI easier
+* [Flask](http://flask.pocoo.org/)
+     Framework used to run backend
+
+### Authors and Contributors
+Miles Peele (@mformetal)
+Tristan Vernon (@Caedus13)
+Jake Shor (@JakeShor)
+Tim Fulton (@tmfulton)
